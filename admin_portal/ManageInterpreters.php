@@ -15,7 +15,7 @@ require_once('php/AjaxTableEditor.php');
 
 
 
-class Example1 extends Common
+class ManageInterpreters extends Common
 {
 	var $Editor;
 
@@ -41,7 +41,7 @@ class Example1 extends Common
 EOF;*/
 		$html = <<<EOF
 		<center><p>Note: the schedule updates itself independent of the form above.</p></center>
-		<iframe src='../scheduler/samples/scheduler/g2l_scheduler.php?interpreter_id=$interpreter_id' width="100%" height="1055">
+		<iframe src='../scheduler/g2l_scheduler.php?interpreter_id=$interpreter_id' width="100%" height="1055">
 		  <p>Your browser does not support iframes.</p>
 		</iframe>
 EOF;
@@ -162,7 +162,7 @@ EOF;
 	}
 	
 	
-	function Example1()
+	function ManageInterpreters()
 	{
 		if(isset($_POST['json']))
 		{
@@ -222,5 +222,5 @@ EOF;
 		}
 	}
 }
-$lte = new Example1();
+$lte = new ManageInterpreters();
 ?>
