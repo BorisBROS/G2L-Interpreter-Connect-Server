@@ -34,4 +34,4 @@ function send_sms_to_phone($msg, $userPhoneTo){
 	return $returnValue;
 }
 	
-?>	
+?>

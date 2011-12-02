@@ -18,9 +18,10 @@
 <script type="text/javascript" charset="utf-8">
 	function init() {
 
+		//PHP is used to get the interpreter ID
 		var interpreter_id = <?php
 			//TODO: add a read only parameter.
-			//PHP is only used to get the interpreter ID.
+			
 			if(array_key_exists('interpreter_id', $_REQUEST)){
 				echo(htmlentities($_REQUEST['interpreter_id']));
 			}
@@ -79,8 +80,8 @@
 		scheduler.locale.labels.section_language = "Language";
 		scheduler.config.lightbox.sections = [	
 			{name:"description", height:200, map_to:"text", type:"textarea" , focus:true},
-			{name:"language", height:21, map_to:"language_id", type:"select", 
-				options:scheduler.serverList("language")},
+			//Right now we don't correctly record the language id because we don't need it.
+			{name:"language", height:21, map_to:"language_id", type:"readonly" },
 			{name:"interpreter", height:21, map_to:"interpreter_id", type:"readonly"},
 			{name:"recurring", height:115, type:"recurring", map_to:"rec_type", button:"recurring"},
 			{name:"time", height:72, type:"time", map_to:"auto"}
