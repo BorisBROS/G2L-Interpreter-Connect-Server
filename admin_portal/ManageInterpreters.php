@@ -125,9 +125,12 @@ EOF;
 	}
 	function displayLoginErrHtml()
 	{
+		echo(include("Index2.html"));
+/*
 		?>
 			<pre>Login Error</pre>
 		<?php
+*/
 	}
 
 	function initiateEditor()
