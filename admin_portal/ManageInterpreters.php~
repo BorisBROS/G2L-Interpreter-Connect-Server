@@ -125,6 +125,7 @@ EOF;
 	}
 	function displayLoginErrHtml($username, $password)
 	{
+		log_error("login failure");
 		echo(include("index.php"));
 /*
 		?>

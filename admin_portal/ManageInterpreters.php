@@ -123,16 +123,6 @@ EOF;
 			</script>
 		<?php
 	}
-	function displayLoginErrHtml($username, $password)
-	{
-		echo(include("index.php"));
-/*
-		?>
-			<pre>Login Error</pre>
-		<?php
-*/
-	}
-
 	function initiateEditor()
 	{
 
@@ -239,7 +229,8 @@ EOF;
 			}
 			else
 			{
-				$this->displayLoginErrHtml($username, $password);
+				log_error("login failure");
+				echo(include("index.php"));
 			}
 		}
 	}
