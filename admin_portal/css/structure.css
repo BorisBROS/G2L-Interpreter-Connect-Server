@@ -13,6 +13,24 @@
 body{
   background:#eff3f6;
 }
+
+/* My own addition */
+.error { 
+  width: 300px;
+  height: 24px;
+  padding: 4px;
+  text-align: center;
+  margin:200px auto;
+  font:normal 18px Arial, Helvetica, Sans-serif;
+  background-color: #FFBBBB;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -moz-box-shadow:rgba(0,0,0,0.15) 0 0 2px;
+  -webkit-box-shadow:rgba(0,0,0,0.15) 0 0 2px;
+  box-shadow:rgba(0,0,0,0.15) 0 0 2px;
+}
+
 .box
 {
     background:#fefefe;

@@ -14,7 +14,7 @@
 if( isset($username) or isset($password) )
 {
 	?>
-	<div>Could not authenticate.</div>
+	<div class="error">Could not authenticate</div>
 	<?php
 }
 ?>
@@ -26,7 +26,7 @@ if( isset($username) or isset($password) )
 	  <input name="password" type="password" tabindex="2" value="<?php echo($password) ?>" required>
 	</fieldset>
 	<footer>
-	  <label><input type="checkbox" tabindex="3">Keep me logged in  (not implemented)</label>
+	  <label><input type="checkbox" tabindex="3" disabled="disabled">Keep me logged in</label>
 	  <input type="submit" class="btnLogin" value="Login" tabindex="4">
 	</footer>
 </form>
