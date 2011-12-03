@@ -123,9 +123,9 @@ EOF;
 			</script>
 		<?php
 	}
-	function displayLoginErrHtml()
+	function displayLoginErrHtml($username, $password)
 	{
-		echo(include("Index2.html"));
+		echo(include("index.php"));
 /*
 		?>
 			<pre>Login Error</pre>
@@ -173,16 +173,6 @@ EOF;
 		$this->Editor->setConfig('viewScreenFun', $showScheduleFunction);
 		$this->Editor->setConfig('tableScreenFun', array(&$this,'clearSchedule'));
 
-	}
-	function checkCredentials()
-	{
-		if(isset($_POST['username']) && isset($_POST['password']))
-		{
-			if($_POST['username'] == G2L_ADMIN_USERNAME && $_POST['password'] == G2L_ADMIN_PASSWORD){
-				return true;
-			}
-		}
-		return false;
 	}
 	function ManageInterpreters()
 	{
@@ -238,7 +228,10 @@ EOF;
 		}
 		else
 		{
-			if($this->checkCredentials())
+			$username = (empty($_POST['username'])) ? '' : $_POST['username'];
+			$password = (empty($_POST['password'])) ? '' : $_POST['password'];
+
+			if($username == G2L_ADMIN_USERNAME && $password == G2L_ADMIN_PASSWORD)
 			{
 				$this->displayHeaderHtml();
 				$this->displayHtml();
@@ -246,7 +239,7 @@ EOF;
 			}
 			else
 			{
-				$this->displayLoginErrHtml();
+				$this->displayLoginErrHtml($username, $password);
 			}
 		}
 	}

@@ -10,15 +10,21 @@
 </head>
 
 <body>
+<?php 
+if( isset($username) or isset($password) )
+{?>
+<div>Could not authenticate.</div>
+<?php}
+?>
 <form class="box login" action="ManageInterpreters.php" method="post">
 	<fieldset class="boxBody">
 	  <label>Username</label>
-	  <input name="username" type="text" tabindex="1" placeholder="<?php echo('username') ?>" required>
+	  <input name="username" type="text" tabindex="1" value="<?php echo($username) ?>" required>
 	  <label><!-- <a href="#" class="rLink" tabindex="5">Forget your password?</a> -->Password</label>
-	  <input name="password" type="password" tabindex="2" placeholder="123" required>
+	  <input name="password" type="password" tabindex="2" value="<?php echo($password) ?>" required>
 	</fieldset>
 	<footer>
-	  <label><input type="checkbox" tabindex="3">Keep me logged in (not implemented)</label>
+	  <label><input type="checkbox" tabindex="3">Keep me logged in  (not implemented)</label>
 	  <input type="submit" class="btnLogin" value="Login" tabindex="4">
 	</footer>
 </form>
