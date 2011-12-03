@@ -13,9 +13,9 @@
 <form class="box login" action="ManageInterpreters.php" method="post">
 	<fieldset class="boxBody">
 	  <label>Username</label>
-	  <input name="username" type="text" tabindex="1" placeholder="" required>
+	  <input name="username" type="text" tabindex="1" placeholder="<?php echo('username') ?>" required>
 	  <label><!-- <a href="#" class="rLink" tabindex="5">Forget your password?</a> -->Password</label>
-	  <input name="password" type="password" tabindex="2" required>
+	  <input name="password" type="password" tabindex="2" placeholder="123" required>
 	</fieldset>
 	<footer>
 	  <label><input type="checkbox" tabindex="3">Keep me logged in (not implemented)</label>
