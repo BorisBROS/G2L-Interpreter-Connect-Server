@@ -12,9 +12,11 @@
 <body>
 <?php 
 if( isset($username) or isset($password) )
-{?>
-<div>Could not authenticate.</div>
-<?php}
+{
+	?>
+	<div>Could not authenticate.</div>
+	<?php
+}
 ?>
 <form class="box login" action="ManageInterpreters.php" method="post">
 	<fieldset class="boxBody">
