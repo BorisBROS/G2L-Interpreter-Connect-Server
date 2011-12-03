@@ -229,7 +229,7 @@ EOF;
 			}
 			else
 			{
-				log_error("login failure");
+				error_log("login failure");
 				echo(include("index.php"));
 			}
 		}
