@@ -15,7 +15,7 @@ require_once('php/AjaxTableEditor.php');
 
 
 
-class ManageInterpreters extends Common
+class Example1 extends Common
 {
 	var $Editor;
 
@@ -29,7 +29,9 @@ class ManageInterpreters extends Common
 	{
 		$interpreter_id = $this->Editor->escapeData($this->Editor->info);
 
-
+		//TODO: For now lets just have a button that links to the scheduler.
+		//I'm a bit worried about how the javascript from the two libraries will interact
+		//(especially considering the way mate does navigation) so an iframe might be the best way to put this into the page.
 		
 		/*
 		$html = <<<EOF
@@ -37,11 +39,6 @@ class ManageInterpreters extends Common
 			<button onclick="window.location.href='../scheduler/samples/scheduler/g2l_scheduler.php?interpreter_id=$interpreter_id'">Scheduler</button>
 		 	</center>
 EOF;*/
-
-
-		//I'm a bit worried about how the javascript from Mate and the scheduler libraries will interact
-		//(especially considering the way mate does navigation)
-		//so I'm using iframes for now to keep things separate.
 		$html = <<<EOF
 		<center><p>Note: the schedule updates itself independent of the form above.</p></center>
 		<iframe src='../scheduler/g2l_scheduler.php?interpreter_id=$interpreter_id' width="100%" height="1055">
@@ -53,9 +50,7 @@ EOF;
 EOF;
 
 		if(!$interpreter_id) $html = $no_schedule_message;
-		
-		/*
-		//Old checkbox scheduler
+/*
 		$html .= '<center><form><fieldset><legend>Available:</legend>';
 		$html .= '<select><option>Sunday</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select><br />';
 
@@ -123,12 +118,6 @@ EOF;
 			</script>
 		<?php
 	}
-	function displayLoginErrHtml()
-	{
-		?>
-			<pre>Login Error</pre>
-		<?php
-	}
 
 	function initiateEditor()
 	{
@@ -171,17 +160,9 @@ EOF;
 		$this->Editor->setConfig('tableScreenFun', array(&$this,'clearSchedule'));
 
 	}
-	function checkCredentials()
-	{
-		if(isset($_POST['username']) && isset($_POST['password']))
-		{
-			if($_POST['username'] == G2L_ADMIN_USERNAME && $_POST['password'] == G2L_ADMIN_PASSWORD){
-				return true;
-			}
-		}
-		return false;
-	}
-	function ManageInterpreters()
+	
+	
+	function Example1()
 	{
 		if(isset($_POST['json']))
 		{
@@ -221,32 +202,25 @@ EOF;
 		}
 		else if(isset($_GET['export']))
 		{
-			session_start();
-			ob_start();
-			$this->mysqlConnect();
-			$this->initiateEditor();
-			echo $this->Editor->exportInfo();
-			header("Cache-Control: no-cache, must-revalidate");
-			header("Pragma: no-cache");
-			header("Content-type: application/x-msexcel");
-			header('Content-Type: text/csv');
-			header('Content-Disposition: attachment; filename="'.$this->Editor->tableName.'.csv"');
-			exit();
-		}
+            session_start();
+            ob_start();
+            $this->mysqlConnect();
+            $this->initiateEditor();
+            echo $this->Editor->exportInfo();
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="'.$this->Editor->tableName.'.csv"');
+            exit();
+        }
 		else
 		{
-			if($this->checkCredentials())
-			{
-				$this->displayHeaderHtml();
-				$this->displayHtml();
-				$this->displayFooterHtml();
-			}
-			else
-			{
-				$this->displayLoginErrHtml();
-			}
+			$this->displayHeaderHtml();
+			$this->displayHtml();
+			$this->displayFooterHtml();
 		}
 	}
 }
-$lte = new ManageInterpreters();
+$lte = new Example1();
 ?>
