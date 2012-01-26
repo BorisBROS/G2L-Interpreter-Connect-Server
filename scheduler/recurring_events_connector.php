@@ -48,9 +48,10 @@
 	}
 */
 
-	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+	$interpreter_id = htmlentities($_REQUEST['interpreter_id']) or NULL;
 	
-	$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
+	
+	$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']) or NULL;
 	
 
 	$scheduler = new schedulerConnector($res);
