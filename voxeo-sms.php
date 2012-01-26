@@ -31,6 +31,7 @@ function get_db_connection() {
 function detect_requested_language($message) {
 
 	$language = strtolower(trim($message));
+	$language = str_replace("fwd:", "", $language, 1);
 	$escaped_language_string = mysql_real_escape_string($language);
 
 	// TODO: partial string matches (i.e. span for spanish).
