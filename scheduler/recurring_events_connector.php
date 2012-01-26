@@ -30,7 +30,13 @@
 		if ($status == "inserted" && $type=="none")
 			$action->set_status("deleted");
 	}
-
+	
+	// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
+	function filter_interpreter($filter_by){
+		//error_log("filter_interpreter by interpreter id = $interpreter_id");
+		if (!sizeof($filter_by->rules)) 
+			$filter_by->add("interpreter_id",$interpreter_id,"=");
+	}
 	
 /*
 	//For debug purposes
@@ -42,20 +48,23 @@
 	}
 */
 
+	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+	
+	$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
+	
 
 	$scheduler = new schedulerConnector($res);
 	//$scheduler->enable_log("log.txt",true);
 	$scheduler->event->attach("beforeProcessing","delete_related");
 	
-	// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
-	function filter_interpreter($filter_by){
-		$interpreter_id = htmlentities($_REQUEST['interpreter_id']); //TODO: check that this is a number.
-		//error_log("filter_interpreter by interpreter id = $interpreter_id");
-		if (!sizeof($filter_by->rules)) 
-			$filter_by->add("interpreter_id",$interpreter_id,"=");
+	if($interpreter_id){
+		if(!is_numeric($interpreter_id)){
+			error_log("invalid interpreter_id");
+			die();
+		}
+		$scheduler->event->attach("beforeFilter","filter_interpreter");
 	}
-	$scheduler->event->attach("beforeFilter","filter_interpreter");
-
+	
 	// 03_connector_options.php
 	$list = new OptionsConnector($res);
 	$list->render_table("languages","id","id(value),language_name_string(label)");
