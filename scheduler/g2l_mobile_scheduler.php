@@ -16,10 +16,10 @@
 				dhx.ui.fullScreen();
     			dhx.ui({
 					view: "scheduler",
-					id: uid,
+					id: "scheduler",
 					save: "recurring_events_connector.php"
 				});
-				$$("scheduler").load("recurring_events_connector.php?uid=" + uid, uid);
+				$$("scheduler").load("recurring_events_connector.php?uid=" + uid, "scheduler");
 			});
 
 		</script>
