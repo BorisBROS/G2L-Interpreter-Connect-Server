@@ -2,6 +2,8 @@
 	include ('config.php');
 	include ('codebase/scheduler_connector.php');
 	include ('codebase/db_sqlsrv.php');
+	
+	error_log("start of script")
 
 	$res=mysql_connect($mysql_server,$mysql_user,$mysql_pass);
     mysql_select_db($mysql_db);
@@ -50,6 +52,7 @@
 
 	$interpreter_id = NULL;
 	$interpreter_phone = NULL;
+	
 	//Fetch, sanitize and check the passed in params:
 	if(array_key_exists('interpreter_id', $_REQUEST)){
 		if(!is_numeric($interpreter_id)){
@@ -77,4 +80,6 @@
 
 	$scheduler->event->attach("afterProcessing","insert_related");
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
+	
+	error_log("end of script")
 ?>

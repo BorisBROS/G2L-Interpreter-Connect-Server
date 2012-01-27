@@ -8,8 +8,7 @@
 
 		<title>Event handling: add, delete, edit</title>
 		<script type="text/javascript" charset="utf-8">
-
-			scheduler.config.init_date = new Date(2009,4,1);
+			scheduler.config.init_date = new Date(2011,4,1);
 			dhx.ready(function(){
 				dhx.ui.fullScreen();
     			dhx.ui({
@@ -17,7 +16,7 @@
 					id: "scheduler",
 					save: "recurring_events_connector.php"
 				});
-				$$("scheduler").load("recurring_events_connector.php","scheduler");
+				$$("scheduler").load("recurring_events_connector.php?"+scheduler.uid(),"scheduler");
 			});
 
 		</script>
