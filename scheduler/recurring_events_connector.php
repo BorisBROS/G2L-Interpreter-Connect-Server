@@ -72,7 +72,7 @@
 	if($interpreter_id){
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
 	}
-	
+	error_log("half way there");
 	// 03_connector_options.php
 	$list = new OptionsConnector($res);
 	$list->render_table("languages","id","id(value),language_name_string(label)");
@@ -81,5 +81,5 @@
 	$scheduler->event->attach("afterProcessing","insert_related");
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 	
-	error_log("end of script")
+	error_log("end of script");
 ?>
