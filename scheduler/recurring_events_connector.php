@@ -86,6 +86,6 @@
 		$scheduler->event->attach("afterProcessing","insert_related");
 	}
 	$scheduler->enable_log("nathan.txt",true);
-	$scheduler->render_table("events","event_id","start_date,end_date,event_name,details");
-	#$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
+	#$scheduler->render_table("events","event_id","start_date,end_date,event_name,details");
+	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 ?>

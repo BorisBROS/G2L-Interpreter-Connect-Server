@@ -10,7 +10,21 @@
 		<script type="text/javascript" charset="utf-8">
 			//scheduler.config.init_date = new Date(2011,4,1);
 			
-			var uid = 1327694098489; //"scheduler"
+			var uid = 1327694098481; //"scheduler"
+
+			scheduler.config.form = [
+			             			{view:"text",		label:"Event",	name:'text' },
+			             			{view:"datepicker",	label:"Start",	name:'start_date',	timeSelect:1, dateFormat:dhx.i18n.fullDateFormat},
+			             			{view:"datepicker",	label:"End",	name:'end_date',	timeSelect:1, dateFormat:dhx.i18n.fullDateFormat},
+			             			//custom section in form
+			             			{view:"text",		label:"rec_type",	name: 'rec_type'},
+			             			{view:"text",		label:"event_pid",	name: 'event_pid'},
+			             			{view:"text",		label:"event_length",	name: 'event_length'},
+			             			{view:"text",		label:"language_id",	name: 'language_id'},
+			             			{view:"text",		label:"interpreter_id",	name: 'interpreter_id'},
+			             			//button can be removed
+			             			{view:"button", label:"Delete", name:"delete", id:"delete"}
+			             		];
 			
 			dhx.ready(function(){
 				dhx.ui.fullScreen();
