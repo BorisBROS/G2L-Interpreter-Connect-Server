@@ -7,14 +7,14 @@
 	<script src="dhtmlx/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
 	<script src="dhtmlx/dhtmlxscheduler_recurring.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="dhtmlx/dhtmlxscheduler.css" type="text/css" title="no title" charset="utf-8">
-<style type="text/css" media="screen">
-	html, body{
-		margin:0px;
-		padding:0px;
-		height:100%;
-		overflow:hidden;
-	}	
-</style>
+	<style type="text/css" media="screen">
+		html, body{
+			margin:0px;
+			padding:0px;
+			height:100%;
+			overflow:hidden;
+		}	
+	</style>
 <script type="text/javascript" charset="utf-8">
 	function init() {
 

@@ -48,7 +48,17 @@
 	}
 */
 
-	$interpreter_id = htmlentities($_REQUEST['interpreter_id']) or NULL;
+	//Fetch, sanitize and check the passed in params:
+	if(array_key_exists('interpreter_id', $_REQUEST)){
+		if(!is_numeric($interpreter_id)){
+			error_log("invalid interpreter_id");
+			die();
+		}
+		$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+	}
+	if(array_key_exists('interpreter_phone', $_REQUEST)){
+		$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
+	}
 	
 	
 	$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']) or NULL;
@@ -59,10 +69,6 @@
 	$scheduler->event->attach("beforeProcessing","delete_related");
 	
 	if($interpreter_id){
-		if(!is_numeric($interpreter_id)){
-			error_log("invalid interpreter_id");
-			die();
-		}
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
 	}
 	
