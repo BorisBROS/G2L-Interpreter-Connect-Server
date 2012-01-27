@@ -10,16 +10,16 @@
 		<script type="text/javascript" charset="utf-8">
 			//scheduler.config.init_date = new Date(2011,4,1);
 			
-			var id = 1327694098489; //"scheduler"
+			var uid = 1327694098489; //"scheduler"
 			
 			dhx.ready(function(){
 				dhx.ui.fullScreen();
     			dhx.ui({
 					view: "scheduler",
-					id: 1327694098489,
+					id: uid,
 					save: "recurring_events_connector.php"
 				});
-				$$("scheduler").load("recurring_events_connector.php",1327694098489);
+				$$("scheduler").load("recurring_events_connector.php?uid=" + uid, uid);
 			});
 
 		</script>

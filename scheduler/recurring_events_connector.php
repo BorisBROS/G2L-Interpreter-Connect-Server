@@ -85,7 +85,6 @@
 	$scheduler->event->attach("afterProcessing","insert_related");
 	
 	error_log("4");
-	$uid = 1327694092546;
 	
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 	
