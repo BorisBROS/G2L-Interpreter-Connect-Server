@@ -51,11 +51,13 @@
 	
 	//Fetch, sanitize and check the passed in params:
 	if(array_key_exists('interpreter_id', $_REQUEST)){
+		
+		$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+		
 		if(!is_numeric($interpreter_id)){
 			error_log("invalid interpreter_id");
 			die();
 		}
-		$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
 	}
 	if(array_key_exists('interpreter_phone', $_REQUEST)){
 		$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
@@ -74,14 +76,16 @@
 	$list = new OptionsConnector($res);
 	
 	error_log("2");
-	if($interpreter_id){
-		$list->render_table("languages","id","id(value),language_name_string(label)");
-		$scheduler->set_options("language", $list);
-	}
+	
+	$list->render_table("languages","id","id(value),language_name_string(label)");
+	$scheduler->set_options("language", $list);
+	
+	error_log("3");
 	
 	$scheduler->event->attach("afterProcessing","insert_related");
 	
-	error_log("3");
+	error_log("4");
+	$uid = 1327694092546;
 	
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 	
