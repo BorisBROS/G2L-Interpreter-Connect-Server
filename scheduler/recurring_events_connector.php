@@ -2,8 +2,8 @@
 	require ('config.php');
 	//include ('codebase/scheduler_connector.php');
 	//include ('codebase/db_sqlsrv.php');
-	require ('mobile_scheduler/codebase/scheduler_connector.php');
-	require ('mobile_scheduler/codebase/db_sqlsrv.php');
+	require ('mobile_scheduler/codebase/connector/scheduler_connector.php');
+	require ('mobile_scheduler/codebase/connector/db_sqlsrv.php');
 	
 	
 	error_log("start of script");
