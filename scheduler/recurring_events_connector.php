@@ -33,6 +33,15 @@
 			$action->set_status("deleted");
 	}
 	
+	// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
+	function filter_interpreter($filter_by){
+		global $interpreter_id;
+		//error_log("filter_interpreter by interpreter id = $interpreter_id");
+		if (!sizeof($filter_by->rules)) 
+			$filter_by->add("interpreter_id",$interpreter_id,"=");
+	}
+	
+	
 	
 	foreach($_REQUEST as $key=>$val) { 
 		error_log("Pkey: $key value: $val");
@@ -63,33 +72,24 @@
 	
 	if($interpreter_id){
 		
-		// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
-		function filter_interpreter($filter_by){
-			//error_log("filter_interpreter by interpreter id = $interpreter_id");
-			if (!sizeof($filter_by->rules)) 
-				$filter_by->add("interpreter_id",$interpreter_id,"=");
-		}
-		
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
+		
+		// 03_connector_options.php
+		$list = new OptionsConnector($res);
+		
+		$list->render_table("languages","id","id(value),language_name_string(label)");
+		$scheduler->set_options("language", $list);
+		
+		$scheduler->event->attach("afterProcessing","insert_related");
 	}
 	
-	error_log("1");
 	
-	// 03_connector_options.php
-	$list = new OptionsConnector($res);
-	
-	error_log("2");
-	
-	$list->render_table("languages","id","id(value),language_name_string(label)");
-	$scheduler->set_options("language", $list);
-	
-	error_log("3");
-	
-	$scheduler->event->attach("afterProcessing","insert_related");
 	
 	error_log("4");
 	
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
+	
+	error_log("5");
 	
 	error_log("end of script");
 ?>
