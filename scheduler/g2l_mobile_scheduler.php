@@ -16,7 +16,7 @@
 					id: "scheduler",
 					save: "recurring_events_connector.php"
 				});
-				$$("scheduler").load("recurring_events_connector.php?"+scheduler.uid(),"scheduler");
+				$$("scheduler").load("recurring_events_connector.php","scheduler");
 			});
 
 		</script>
