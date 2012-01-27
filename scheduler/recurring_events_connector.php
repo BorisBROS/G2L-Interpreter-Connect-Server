@@ -48,6 +48,8 @@
 	}
 */
 
+	$interpreter_id = NULL;
+	$interpreter_phone = NULL;
 	//Fetch, sanitize and check the passed in params:
 	if(array_key_exists('interpreter_id', $_REQUEST)){
 		if(!is_numeric($interpreter_id)){
@@ -59,10 +61,6 @@
 	if(array_key_exists('interpreter_phone', $_REQUEST)){
 		$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
 	}
-	
-	
-	$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']) or NULL;
-	
 
 	$scheduler = new schedulerConnector($res);
 	//$scheduler->enable_log("log.txt",true);
