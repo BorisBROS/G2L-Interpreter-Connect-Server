@@ -3,7 +3,7 @@
 	include ('codebase/scheduler_connector.php');
 	include ('codebase/db_sqlsrv.php');
 	
-	error_log("start of script")
+	error_log("start of script");
 
 	$res=mysql_connect($mysql_server,$mysql_user,$mysql_pass);
     mysql_select_db($mysql_db);
