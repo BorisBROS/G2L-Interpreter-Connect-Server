@@ -9,7 +9,6 @@
 		<title>Event handling: add, delete, edit</title>
 		<script type="text/javascript" charset="utf-8">
 			//scheduler.config.init_date = new Date(2011,4,1);
-			alert("" + sheduler.uid());
 			dhx.ready(function(){
 				dhx.ui.fullScreen();
     			dhx.ui({

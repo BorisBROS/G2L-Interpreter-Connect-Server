@@ -40,15 +40,11 @@
 			$filter_by->add("interpreter_id",$interpreter_id,"=");
 	}
 	
-/*
-	//For debug purposes
-	foreach($_GET as $key=>$val) { 
-		error_log("Gkey: $key value: $val");
-	}
-	foreach($_POST as $key=>$val) { 
+
+	foreach($_REQUEST as $key=>$val) { 
 		error_log("Pkey: $key value: $val");
 	}
-*/
+
 
 	$interpreter_id = NULL;
 	$interpreter_phone = NULL;
