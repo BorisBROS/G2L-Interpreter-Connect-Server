@@ -68,13 +68,21 @@
 	if($interpreter_id){
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
 	}
-	error_log("half way there");
+	error_log("1");
+	
 	// 03_connector_options.php
 	$list = new OptionsConnector($res);
-	$list->render_table("languages","id","id(value),language_name_string(label)");
-	$scheduler->set_options("language", $list);
-
+	
+	error_log("2");
+	if($interpreter_id){
+		$list->render_table("languages","id","id(value),language_name_string(label)");
+		$scheduler->set_options("language", $list);
+	}
+	
 	$scheduler->event->attach("afterProcessing","insert_related");
+	
+	error_log("3");
+	
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 	
 	error_log("end of script");
