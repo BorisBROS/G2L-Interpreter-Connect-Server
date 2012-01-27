@@ -1,7 +1,10 @@
 <?php
 	include ('config.php');
-	include ('codebase/scheduler_connector.php');
-	include ('codebase/db_sqlsrv.php');
+	//include ('codebase/scheduler_connector.php');
+	//include ('codebase/db_sqlsrv.php');
+	include ('mobile_scheduler/codebase/scheduler_connector.php');
+	include ('mobile_scheduler/codebase/db_sqlsrv.php');
+	
 	
 	error_log("start of script");
 
