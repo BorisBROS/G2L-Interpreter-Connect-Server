@@ -33,14 +33,7 @@
 			$action->set_status("deleted");
 	}
 	
-	// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
-	function filter_interpreter($filter_by){
-		//error_log("filter_interpreter by interpreter id = $interpreter_id");
-		if (!sizeof($filter_by->rules)) 
-			$filter_by->add("interpreter_id",$interpreter_id,"=");
-	}
 	
-
 	foreach($_REQUEST as $key=>$val) { 
 		error_log("Pkey: $key value: $val");
 	}
@@ -62,14 +55,24 @@
 	if(array_key_exists('interpreter_phone', $_REQUEST)){
 		$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
 	}
-
+	
+	
 	$scheduler = new schedulerConnector($res);
 	//$scheduler->enable_log("log.txt",true);
 	$scheduler->event->attach("beforeProcessing","delete_related");
 	
 	if($interpreter_id){
+		
+		// http://docs.dhtmlx.com/doku.php?id=dhtmlxconnector:filtering
+		function filter_interpreter($filter_by){
+			//error_log("filter_interpreter by interpreter id = $interpreter_id");
+			if (!sizeof($filter_by->rules)) 
+				$filter_by->add("interpreter_id",$interpreter_id,"=");
+		}
+		
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
 	}
+	
 	error_log("1");
 	
 	// 03_connector_options.php
