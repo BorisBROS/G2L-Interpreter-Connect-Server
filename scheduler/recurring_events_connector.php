@@ -89,8 +89,8 @@
 	
 	
 	error_log("4");
-	
-	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
+	$scheduler->render_table("events_rec","event_id","start_date,end_date,text");
+	#$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 	
 	error_log("5");
 	
