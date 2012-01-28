@@ -29,25 +29,35 @@
 		<a href="../" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
-	<label for="mydate">Some Time</label>
 
-	<input name="mydate" id="mydate" type="date" data-role="datebox"
-	   data-options='{"mode": "timebox", "timeFormatOverride": 12}'>
-	
 	<div data-role="content" data-theme="c">
 		<div class="content-secondary"> 
 	
-			<div id="jqm-homeheader"> 
-				<h1 id="jqm-logo"><img src="../jquery-logo-db.png" alt="jQuery Mobile Framework :: DateBox" /></h1> 
-				<p>A Date and Time Picker plugin for jQueryMobile</p> 
-				
-			</div> 
+			<div  data-role="fieldcontain">
+			 	<fieldset data-role="controlgroup">
+					<legend>Recur every:</legend>
+					<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
+					<label for="checkbox-1a">Monday</label>
+
+					<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" />
+					<label for="checkbox-2a">Tuesday</label>
+					
+					<input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom" />
+					<label for="checkbox-3a">Wednesday</label>
+
+					<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
+					<label for="checkbox-4a">Thursday</label>
+					
+					<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
+					<label for="checkbox-4a">Friday</label>
+					
+			    </fieldset>
+			</div>
 			
-			<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="f"> 
-				<li data-role="list-divider">Android Demos</li> 
-				<li data-theme="a">Simple Options</li> 
-				<li><a href="limit.html">Range Limiting &amp; Picking</a></li>
-			</ul> 
+			<label for="mydate">Some Time</label>
+			
+			<input name="mydate" id="mydate" type="date" data-role="datebox"
+			   data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 			
 		</div><!--/content-primary-->	
 		
