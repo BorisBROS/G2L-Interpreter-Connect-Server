@@ -12,6 +12,8 @@
 			
 			var uid = 1327694098481; //"scheduler"
 
+			scheduler.config.readonly = true;
+			
 			scheduler.config.form = [
 			             			{view:"text",		label:"Event",	name:'text' },
 			             			{view:"datepicker",	label:"Start",	name:'start_date',	timeSelect:1, dateFormat:dhx.i18n.fullDateFormat},
@@ -30,8 +32,8 @@
 				dhx.ui.fullScreen();
     			dhx.ui({
 					view: "scheduler",
-					id: "scheduler",
-					save: "recurring_events_connector.php"
+					//save: "recurring_events_connector.php",
+					id: "scheduler"
 				});
 				$$("scheduler").load("recurring_events_connector.php?interpreter_id=1&uid=" + uid, "scheduler");
 			});
