@@ -1,8 +1,8 @@
 <?php
 	require ('config.php');
-	//include ('codebase/scheduler_connector.php');
+	require ('codebase/scheduler_connector.php');
 	
-	require ('mobile_scheduler/codebase/connector/scheduler_connector.php');
+	//require ('mobile_scheduler/codebase/connector/scheduler_connector.php');
 	//require ('mobile_scheduler/codebase/connector/db_sqlsrv.php');
 	//require ('codebase/db_sqlsrv.php');
 	

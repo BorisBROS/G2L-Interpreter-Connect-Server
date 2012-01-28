@@ -27,13 +27,17 @@
 			             		];
 			
 			dhx.ready(function(){
+				alert("hi");
 				dhx.ui.fullScreen();
+				alert("hi2");
     			dhx.ui({
 					view: "scheduler",
 					id: "scheduler",
 					save: "recurring_events_connector.php"
 				});
+    			alert("hi3");
 				$$("scheduler").load("recurring_events_connector.php?uid=" + uid, "scheduler");
+				alert("hi4");
 			});
 
 		</script>
