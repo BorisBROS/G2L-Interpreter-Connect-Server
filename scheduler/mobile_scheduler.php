@@ -48,21 +48,18 @@
 					<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
 					<label for="checkbox-4a">Thursday</label>
 					
-					<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
+					<input type="checkbox" name="checkbox-5a" id="checkbox-5a" class="custom" />
 					<label for="checkbox-4a">Friday</label>
 					
 			    </fieldset>
 			</div>
-			
-			<label for="mydate">Some Time</label>
-			
-			<input name="mydate" id="mydate" type="date" data-role="datebox"
-			   data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
-			
 		</div><!--/content-primary-->	
 		
 		<div class="content-primary"> 
 			<nav> 
+			
+				<label for="mydate">Some Time</label><input name="mydate" id="mydate" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+			
 				<h2>Android Default</h2>
 				
 				<div data-role="fieldcontain">
