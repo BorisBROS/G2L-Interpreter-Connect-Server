@@ -27,12 +27,12 @@
 <div data-role="page" data-theme="c" id="droIndex"> 
 	<div data-role="header"> 
 		<h1>Add Time</h1>
-		<a href="mobile_scheduler.php" data-icon="home" data-iconpos="notext">Home</a>
+		<a href="mobile_scheduler.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>>" method="post">
+        <form action="mobile_scheduler_connector.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" method="post">
 
             <div data-role="fieldcontain">
                 <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"
@@ -68,8 +68,8 @@
             
         	<div class="ui-body ui-body-b">
     		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><button type="submit" data-theme="d">Delete</button></div>
-				<div class="ui-block-b"><button type="submit" data-theme="a">Save</button></div>
+				<div class="ui-block-a"><button type="submit" data-theme="d" name="submit" value="delete">Delete</button></div>
+				<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="save">Save</button></div>
     	    </fieldset>
     		</div>
         

@@ -1,12 +1,3 @@
-<html>
-<head>
-<meta http-equiv="Refresh" content="url=mobile_scheduler" />
-</head>
-
-<body>
-<h1>Redirecting...</h1>
-</body>
-</html>
 <?php
 
 require_once('config.php');
@@ -61,3 +52,12 @@ catch(PDOException $e) {
 */
 
 ?>
+<html>
+<head>
+<meta http-equiv="Refresh" content="url=mobile_scheduler.php" />
+</head>
+
+<body>
+<h1>Redirecting...</h1>
+</body>
+</html>
