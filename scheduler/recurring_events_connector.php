@@ -5,8 +5,6 @@
 	//require ('mobile_scheduler/codebase/connector/scheduler_connector.php');
 	//require ('mobile_scheduler/codebase/connector/db_sqlsrv.php');
 	//require ('codebase/db_sqlsrv.php');
-	
-	error_log("start of script");
 
 	$res=mysql_connect($mysql_server,$mysql_user,$mysql_pass);
     mysql_select_db($mysql_db);
@@ -44,12 +42,11 @@
 			$filter_by->add("interpreter_id",$interpreter_id,"=");
 	}
 	
-	
-	
+	/*
 	foreach($_REQUEST as $key=>$val) { 
 		error_log("Pkey: $key value: $val");
 	}
-
+	*/
 
 	$interpreter_id = NULL;
 	$interpreter_phone = NULL;
@@ -68,11 +65,11 @@
 		$interpreter_phone = htmlentities($_REQUEST['interpreter_phone']);
 	}
 	
-	
 	$scheduler = new schedulerConnector($res);
 	//$scheduler->enable_log("log.txt",true);
 	$scheduler->event->attach("beforeProcessing","delete_related");
 	
+	//If the interpreter id param is passed in filter events for only that interpreter.
 	if($interpreter_id){
 		
 		$scheduler->event->attach("beforeFilter","filter_interpreter");
@@ -84,8 +81,8 @@
 		$scheduler->set_options("language", $list);
 		
 		$scheduler->event->attach("afterProcessing","insert_related");
+	
 	}
-	$scheduler->enable_log("nathan.txt",true);
-	#$scheduler->render_table("events","event_id","start_date,end_date,event_name,details");
+
 	$scheduler->render_table("events_rec","event_id","start_date,end_date,text,rec_type,event_pid,event_length,language_id,interpreter_id");//add extras here
 ?>
