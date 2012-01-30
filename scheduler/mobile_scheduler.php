@@ -42,14 +42,16 @@ function get_days($matches)
 	// $matches[1] the match for the first subpattern
 	// enclosed in '(...)' and so on
 	
-	$days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-		
-	$return_value = '';
-		
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	
+	array_shift($matches);
+	
+	/*
 	foreach ($matches as $match){
 		$return_value .= $days[$match]. ', ';
 	}
-	return $return_value;
+	*/
+	return $implode(',', $matches);
 }
 
 try {
@@ -64,19 +66,22 @@ try {
 	foreach ($result as $row) {
 		 
 		$event_id = $row['event_id'];
-		$start_time_unix = strtotime($row['start_date']);
-		$event_start = date($start_time_unix, 'h:i:s A');
-		$event_end = date($start_time_unix + $row['event_length'], 'h:i:s A');
+		$start_date = new DateTime($row['start_date']);
+		$event_start = $start_date->format('h:i A');
+		$event_length = new DateInterval('PT'.$row['event_length'].'S');
+		$end_date = $start_date->add($event_length);
+		$event_end = $end_date->format('h:i A');
+		
 		$event_days = preg_replace_callback(
 		            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|",
 		            "get_days",
 		            $row['rec_type']);
 		 
 ?>
-		<li><a href="mobile_scheduler_edit.html?<?php echo $event_id ?>">
+		<li><a href="mobile_scheduler_edit.php?<?php echo $event_id ?>">
 			
-				<h3><?php echo $event_start . 'to' . $event_end ?></h3>
-				<p><strong><?php echo $event_days ?></strong></p>
+				<h3><?php echo("$event_start - $event_end"); ?></h3>
+				<p><strong><?php echo($event_days); ?></strong></p>
 				
 		</a></li>
 <?php

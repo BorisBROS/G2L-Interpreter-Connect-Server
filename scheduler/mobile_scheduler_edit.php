@@ -29,32 +29,23 @@
 		<a href="../" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
-
-	
 	<div data-role="content" data-theme="c">
     
         <form action="forms-sample-response.php" method="post">
     
-	    	<nav>
-			    
-                <p>I will be available...</p>
 
-                <div data-role="fieldcontain">
-                    <label for="at-date">at</label>
-                    <input name="at-date" id="mydate" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' class="custom" />
-			    </div>
-				
-                <div data-role="fieldcontain">
-                    <label for="until-date">until</label>
-                    <input name="until-date" id="mydate" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
-    		    </div>
-                
-			</nav> 
-    
+            <h2>I will be available...</h2>
+            <fieldset class="ui-grid-a">
+            <div data-role="fieldcontain">
+                <label for="at-date">At:</label><input name="at-date" id="at-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+		    </div>
+			
+            <div data-role="fieldcontain">
+                <label for="until-date">Until:</label><input name="until-date" id="until-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+		    </div>
 
     		<div  data-role="fieldcontain">
 			 	<fieldset data-role="controlgroup">
-					<legend>on</legend>
 					<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
 					<label for="checkbox-1a">Monday</label>
 
@@ -72,8 +63,13 @@
 					
 			    </fieldset>
 			</div>
-            <button type="submit" data-theme="b" name="submit" value="submit-value">Submit</button>
-
+            
+        	<div class="ui-body ui-body-b">
+    		<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><button type="submit" data-theme="d">Delete</button></div>
+				<div class="ui-block-b"><button type="submit" data-theme="a">Save</button></div>
+    	    </fieldset>
+    		</div>
         
 		</form>
         
