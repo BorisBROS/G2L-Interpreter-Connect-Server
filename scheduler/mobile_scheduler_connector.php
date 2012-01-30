@@ -54,7 +54,7 @@ catch(PDOException $e) {
 ?>
 <html>
 <head>
-<meta http-equiv="Refresh" content="url=mobile_scheduler.php" />
+<meta http-equiv="Refresh" content="5;url=mobile_scheduler.php" />
 </head>
 
 <body>

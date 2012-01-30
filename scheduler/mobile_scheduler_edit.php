@@ -27,12 +27,12 @@
 <div data-role="page" data-theme="c" id="droIndex"> 
 	<div data-role="header"> 
 		<h1>Add Time</h1>
-		<a href="mobile_scheduler.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" data-icon="home" data-iconpos="notext">Home</a>
+		<a href="mobile_scheduler.php?interpreter_id=<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" method="post">
+        <form action="mobile_scheduler_connector.php?interpreter_id=<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" method="post">
 
             <div data-role="fieldcontain">
                 <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"
