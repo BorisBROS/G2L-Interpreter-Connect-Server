@@ -55,7 +55,7 @@ function get_days($matches)
 		$return_value .= $days[$match]. ', ';
 	}
 	*/
-	return $implode(',', $matches);
+	return implode(',', $matches);
 }
 
 try {
