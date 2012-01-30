@@ -34,10 +34,8 @@
     
         <form action="mobile_scheduler_connector.php" method="post">
 
-            <h2>I will be available...</h2>
-            <fieldset class="ui-grid-a">
             <div data-role="fieldcontain">
-                <label for="at-date">At:</label><input name="at-date" id="at-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+                <label for="at-date">I will be available at:</label><input name="at-date" id="at-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 		    </div>
 			
             <div data-role="fieldcontain">
@@ -46,21 +44,25 @@
 
     		<div  data-role="fieldcontain">
 			 	<fieldset data-role="controlgroup">
+			 		<?php 
+			 		$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
+			 		foreach($days as $day){
+			 			$checked = '';
+			 			if(array_key_exists($day, $_REQUEST)){
+							$checked = 'checked="checked"';
+			 			}
+ 						echo(
+			 			"<input type='checkbox' name='$day' id='$day' class='custom' $checked />
+						<label for='$day'>$day</label>"
+			 			);
+			 		}
+			 		?>
 					<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
 					<label for="checkbox-1a">Monday</label>
 
 					<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" checked="checked" />
 					<label for="checkbox-2a">Tuesday</label>
-					
-					<input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom" />
-					<label for="checkbox-3a">Wednesday</label>
 
-					<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
-					<label for="checkbox-4a">Thursday</label>
-					
-					<input type="checkbox" name="checkbox-5a" id="checkbox-5a" class="custom" />
-					<label for="checkbox-5a">Friday</label>
-					
 			    </fieldset>
 			</div>
             

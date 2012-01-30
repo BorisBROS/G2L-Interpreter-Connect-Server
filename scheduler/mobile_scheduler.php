@@ -1,3 +1,46 @@
+<?php 
+require_once('config.php');
+
+/**
+ * This is used with the regular expression for parsing rec_type to produce a list of days.
+ */
+function int_to_day($int){
+	$days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	return $days[$int];
+}
+
+try {
+	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
+
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+	$parameter_names = array(
+	'phone_number', 
+	'interpreter_id'
+	);
+	
+	$parameters = array();
+	
+	foreach($parameter_names as $param_name ) { 
+		if(array_key_exists($param_name, $_REQUEST)){
+			$parameters[$param_name] = htmlentities($_REQUEST[$param_name]);
+		}
+		else{
+			$parameters[$param_name] = null;
+		}
+	}
+	
+	if(!$phone_number && !$interpreter_id){
+		throw new Exception("Could not id interpreter.");
+	}
+	if(!$interpreter_id && $phone_number){
+		//Lookup interpreter_id in db
+		$interpreter_id = 2;
+	}
+	
+	extract( $parameters );
+	
+?>
 <!DOCTYPE html> 
 <html lang="en"> 
 <head> 
@@ -31,40 +74,15 @@
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
 	
-	<form action="forms-sample-response.php" method="get" class="ui-body ui-body-a ui-corner-all">
+	<form action="mobile_scheduler_edit.php<?php echo('interpreter_id='.$interpreter_id); ?>" method="get" class="ui-body ui-body-a">
 		<fieldset>
-			<button type="submit" data-theme="b" name="submit" value="submit-value">Add Time</button>
+			<button type="submit" data-theme="b" name="submit" value="add">Add Time</button>
 		</fieldset>
 	</form>
 	
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true">
 <?php 
-require_once('config.php');
-
-function int_to_day($int){
-	$days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-	return $days[$int];
-}
-/**
- * This is used with the regular expression for parsing rec_type to produce a list of days.
- */
-function get_days($matches)
-{
-	// as usual: $matches[0] is the complete match
-	// $matches[1] the match for the first subpattern
-	// enclosed in '(...)' and so on
-	array_shift($matches);
-	$matches = array_filter($matches);
-	$matches = array_map("int_to_day", $matches);
-	return implode(', ', $matches);
-}
-
-try {
-	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
-
-	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-
 	$sql = "SELECT * FROM events_rec";
 	$result = $db->query($sql);
 	foreach ($result as $row) {
@@ -80,33 +98,36 @@ try {
 		
 		$event_end = $end_date->format('h:i A');
 		if($row['rec_type']){
-			$event_days = preg_replace_callback(
-			            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|",
-			            "get_days",
-			            $row['rec_type']);
+			$matches = array();
+			$event_days = preg_match(
+			            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|", $row['rec_type'], $matches);
+			
+			// $matches[0] is the complete match so we throw that out (we only want the parenthised subpatterns)
+			array_shift($matches);
+			// remove empty strings (where digits were not found)
+			$matches = array_filter($matches);
+
+			$days = array_map("int_to_day", $matches);
+			
+			$event_days = implode(', ', $days);
 		}
 		else{
 			$event_days = $start_date->format('m/d/Y');
 		}
-		 
 ?>
-		<li><a href="mobile_scheduler_edit.php?<?php echo $event_id ?>">
+		<li><a href="mobile_scheduler_edit.php?<?php echo('event_id='.$event_id.'&'.implode('=1&', $days).'=1'); ?>">
 			
 				<h3><?php echo("$event_start - $event_end"); ?></h3>
 				<p><strong><?php echo($event_days); ?></strong></p>
 				
 		</a></li>
 <?php
-
     }
- 
-    $db = null; // close the database connection
- 
+$db = null; // close the database connection
 }
 catch(PDOException $e) {
     echo $e->getMessage();
 }
-
 ?>
 		</ul>
 
