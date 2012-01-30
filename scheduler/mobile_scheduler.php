@@ -36,15 +36,19 @@
 <?php 
 require_once('config.php');
 
+function int_to_day($int){
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	return $days[$int];
+}
 function get_days($matches)
 {
 	// as usual: $matches[0] is the complete match
 	// $matches[1] the match for the first subpattern
 	// enclosed in '(...)' and so on
 	
-	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-	
 	array_shift($matches);
+	$matches = array_filter($matches);
+	$matches = array_map("int_to_day", $matches);
 	
 	/*
 	foreach ($matches as $match){
