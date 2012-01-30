@@ -37,24 +37,44 @@
 require_once('config.php');
 
 try {
-    $db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
- 
-    echo "Connected to database"; // check for connection
- 
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
- 
-    $sql = "SELECT * FROM events_rec";
-    $result = $db->query($sql);
-    foreach ($result as $row) {
-    	
-    	$event_id = $row['event_id'];
-    	$event_start = $row['start_date'];
-    	$event_end = $row['event_length'];
-    	$event_days = strrchr($row['rec_type'], '_');
+	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
+
+	echo "Connected to database"; // check for connection
+
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+	$sql = "SELECT * FROM events_rec";
+	$result = $db->query($sql);
+	foreach ($result as $row) {
+		 
+		$event_id = $row['event_id'];
+		$event_start = $row['start_date'];
+		$event_end = $row['event_length'];
+		 
+		function get_days($matches)
+		{
+			// as usual: $matches[0] is the complete match
+			// $matches[1] the match for the first subpattern
+			// enclosed in '(...)' and so on
+			
+			$days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+				
+			$return_value = '';
+				
+			foreach ($matches as $match){
+				$return_value .= $days[$match]. ' ';
+			}
+			return $return_value . '/n';
+		}
+		$event_days = preg_replace_callback(
+		            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|",
+		            "get_days",
+		            $row['rec_type']);
+		 
 ?>
 		<li><a href="mobile_scheduler_edit.html?<?php echo $event_id ?>">
 			
-				<h3>8:00AM to 11:00AM</h3>
+				<h3>$event_start</h3>
 				<p><strong><?php echo $event_days ?></strong></p>
 				
 		</a></li>
