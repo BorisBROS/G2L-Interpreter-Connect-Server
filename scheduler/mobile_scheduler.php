@@ -2,6 +2,7 @@
 <html lang="en"> 
 <head> 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>jQueryMobile - DateBox Demos</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 	<link type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.css" rel="stylesheet" /> 
@@ -29,7 +30,13 @@
     <div data-role="header"> 
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
-
+	
+	<form action="forms-sample-response.php" method="post">
+    		<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><button type="submit" data-theme="d">Add Time</button></div>
+    	    </fieldset>
+	</form>
+	
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true">
 <?php 
@@ -55,8 +62,6 @@ function get_days($matches)
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
-
-	echo "Connected to database"; // check for connection
 
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
@@ -106,12 +111,6 @@ catch(PDOException $e) {
 		</ul>
 
 	</div><!-- /content -->
-	
-	<div data-role="footer">
-    		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><button type="submit" data-theme="d">Add Time</button></div>
-    	    </fieldset>
-	</div><!-- /footer -->
 
 </div><!-- /page -->
 

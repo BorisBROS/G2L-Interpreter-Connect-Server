@@ -1,7 +1,8 @@
 <!DOCTYPE html> 
 <html lang="en"> 
 <head> 
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>jQueryMobile - DateBox Demos</title>
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 	<link type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.css" rel="stylesheet" /> 
