@@ -47,7 +47,7 @@ function get_days($matches)
 	$return_value = '';
 		
 	foreach ($matches as $match){
-		$return_value .= $days[$match]. ' ';
+		$return_value .= $days[$match]. ', ';
 	}
 	return $return_value;
 }
@@ -64,8 +64,9 @@ try {
 	foreach ($result as $row) {
 		 
 		$event_id = $row['event_id'];
-		$event_start = $row['start_date'];
-		$event_end = $row['event_length'];
+		$start_time_unix = strtotime($row['start_date']);
+		$event_start = date($start_time_unix, 'h:i:s A');
+		$event_end = date($start_time_unix + $row['event_length'], 'h:i:s A');
 		$event_days = preg_replace_callback(
 		            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|",
 		            "get_days",
@@ -74,7 +75,7 @@ try {
 ?>
 		<li><a href="mobile_scheduler_edit.html?<?php echo $event_id ?>">
 			
-				<h3>$event_start</h3>
+				<h3><?php echo $event_start . 'to' . $event_end ?></h3>
 				<p><strong><?php echo $event_days ?></strong></p>
 				
 		</a></li>
