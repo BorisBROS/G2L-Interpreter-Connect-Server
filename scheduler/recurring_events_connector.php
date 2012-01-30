@@ -41,12 +41,6 @@
 		if (!sizeof($filter_by->rules)) 
 			$filter_by->add("interpreter_id",$interpreter_id,"=");
 	}
-	
-	/*
-	foreach($_REQUEST as $key=>$val) { 
-		error_log("Pkey: $key value: $val");
-	}
-	*/
 
 	$interpreter_id = NULL;
 	$interpreter_phone = NULL;

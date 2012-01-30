@@ -26,14 +26,13 @@
 <body>
 <div data-role="page" data-theme="c" id="droIndex"> 
 	<div data-role="header"> 
-		<h1>jQueryMobile - DateBox</h1>
-		<a href="../" data-icon="home" data-iconpos="notext">Home</a>
+		<h1>Add Time</h1>
+		<a href="mobile_scheduler.php" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="forms-sample-response.php" method="post">
-    
+        <form action="mobile_scheduler_connector.php" method="post">
 
             <h2>I will be available...</h2>
             <fieldset class="ui-grid-a">
@@ -50,7 +49,7 @@
 					<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
 					<label for="checkbox-1a">Monday</label>
 
-					<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" />
+					<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" checked="checked" />
 					<label for="checkbox-2a">Tuesday</label>
 					
 					<input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom" />

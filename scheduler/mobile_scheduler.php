@@ -31,10 +31,10 @@
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
 	
-	<form action="forms-sample-response.php" method="post">
-    		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><button type="submit" data-theme="d">Add Time</button></div>
-    	    </fieldset>
+	<form action="forms-sample-response.php" method="get" class="ui-body ui-body-a ui-corner-all">
+		<fieldset>
+			<button type="submit" data-theme="b" name="submit" value="submit-value">Add Time</button>
+		</fieldset>
 	</form>
 	
 	<div data-role="content">
@@ -90,7 +90,7 @@ try {
 		}
 		 
 ?>
-		<li><a href="mobile_scheduler_edit.php?<?php echo $event_id ?>" data-rel="dialog" data-transition="pop">
+		<li><a href="mobile_scheduler_edit.php?<?php echo $event_id ?>">
 			
 				<h3><?php echo("$event_start - $event_end"); ?></h3>
 				<p><strong><?php echo($event_days); ?></strong></p>
