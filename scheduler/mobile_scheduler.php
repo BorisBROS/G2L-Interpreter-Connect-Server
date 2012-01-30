@@ -36,6 +36,22 @@
 <?php 
 require_once('config.php');
 
+function get_days($matches)
+{
+	// as usual: $matches[0] is the complete match
+	// $matches[1] the match for the first subpattern
+	// enclosed in '(...)' and so on
+	
+	$days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+		
+	$return_value = '';
+		
+	foreach ($matches as $match){
+		$return_value .= $days[$match]. ' ';
+	}
+	return $return_value;
+}
+
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
 
@@ -50,22 +66,6 @@ try {
 		$event_id = $row['event_id'];
 		$event_start = $row['start_date'];
 		$event_end = $row['event_length'];
-		 
-		function get_days($matches)
-		{
-			// as usual: $matches[0] is the complete match
-			// $matches[1] the match for the first subpattern
-			// enclosed in '(...)' and so on
-			
-			$days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-				
-			$return_value = '';
-				
-			foreach ($matches as $match){
-				$return_value .= $days[$match]. ' ';
-			}
-			return $return_value . '/n';
-		}
 		$event_days = preg_replace_callback(
 		            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|",
 		            "get_days",
