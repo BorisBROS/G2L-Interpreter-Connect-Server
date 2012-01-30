@@ -47,10 +47,10 @@ try {
     $result = $db->query($sql);
     foreach ($result as $row) {
     	
-    	$event_id = $result['event_id'];
-    	$event_start = $result['start_date'];
-    	$event_end = $result['event_length'];
-    	$event_days = strrchr($result['rec_type'], '_');
+    	$event_id = $row['event_id'];
+    	$event_start = $row['start_date'];
+    	$event_end = $row['event_length'];
+    	$event_days = strrchr($row['rec_type'], '_');
 ?>
 		<li><a href="mobile_scheduler_edit.html?<?php echo $event_id ?>">
 			
