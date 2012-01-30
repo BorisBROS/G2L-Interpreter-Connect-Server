@@ -30,6 +30,8 @@ try {
 		}
 	}
 	
+	extract( $parameters );
+	
 	if(!$phone_number && !$interpreter_id){
 		throw new Exception("Could not id interpreter.");
 	}
@@ -37,8 +39,6 @@ try {
 		//Lookup interpreter_id in db
 		$interpreter_id = 2;
 	}
-	
-	extract( $parameters );
 	
 ?>
 <!DOCTYPE html> 
