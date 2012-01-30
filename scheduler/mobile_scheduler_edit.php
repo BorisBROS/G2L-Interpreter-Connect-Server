@@ -32,14 +32,20 @@
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php" method="post">
+        <form action="mobile_scheduler_connector.php?<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>>" method="post">
 
             <div data-role="fieldcontain">
-                <label for="at-date">I will be available at:</label><input name="at-date" id="at-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+                <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"
+                value="<?php 
+                echo(htmlentities($_REQUEST['start_time']));
+                ?>" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 		    </div>
 			
             <div data-role="fieldcontain">
-                <label for="until-date">Until:</label><input name="until-date" id="until-date" type="date" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+                <label for="end_time">Until:</label><input name="end_time" id="end_time" type="date"
+                value="<?php 
+                echo(htmlentities($_REQUEST['end_time']));
+                ?>" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 		    </div>
 
     		<div  data-role="fieldcontain">
@@ -57,12 +63,6 @@
 			 			);
 			 		}
 			 		?>
-					<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
-					<label for="checkbox-1a">Monday</label>
-
-					<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" checked="checked" />
-					<label for="checkbox-2a">Tuesday</label>
-
 			    </fieldset>
 			</div>
             

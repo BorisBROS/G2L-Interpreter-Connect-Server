@@ -15,8 +15,8 @@ try {
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 	$parameter_names = array(
-	'phone_number', 
-	'interpreter_id'
+		'phone_number', 
+		'interpreter_id'
 	);
 	
 	$parameters = array();
@@ -74,7 +74,7 @@ try {
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
 	
-	<form action="mobile_scheduler_edit.php<?php echo('interpreter_id='.$interpreter_id); ?>" method="get" class="ui-body ui-body-a">
+	<form action="mobile_scheduler_edit.php?<?php echo('interpreter_id='.$interpreter_id); ?>" method="get" class="ui-body ui-body-a">
 		<fieldset>
 			<button type="submit" data-theme="b" name="submit" value="add">Add Time</button>
 		</fieldset>
@@ -83,7 +83,7 @@ try {
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true">
 <?php 
-	$sql = "SELECT * FROM events_rec";
+	$sql = "SELECT * FROM events_rec WHERE `interpreter_id`=$interpreter_id";
 	$result = $db->query($sql);
 	foreach ($result as $row) {
 		 
@@ -115,7 +115,7 @@ try {
 			$event_days = $start_date->format('m/d/Y');
 		}
 ?>
-		<li><a href="mobile_scheduler_edit.php?<?php echo('event_id='.$event_id.'&'.implode('=1&', $days).'=1'); ?>">
+		<li><a href="mobile_scheduler_edit.php?<?php echo('event_id='.$event_id.'&interpreter_id='.$interpreter_id.'&'.implode('=1&', $days).'=1&start_time='.$event_start.'&end_time='.$event_end); ?>">
 			
 				<h3><?php echo("$event_start - $event_end"); ?></h3>
 				<p><strong><?php echo($event_days); ?></strong></p>
