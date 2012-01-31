@@ -12,6 +12,8 @@ foreach($_REQUEST as $key=>$val) {
 
 $event_id = $_REQUEST['event_id'] or -1;
 
+$interpreter_id = $_REQUEST['interpreter_id'] or -1;
+
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
 
@@ -29,7 +31,7 @@ try {
 			}
 		}
 		$rec_type = 'week_1___'.implode(',', $day_int_set).'#no';
-		error_log("rec_type: $rec_type");
+		//error_log("rec_type: $rec_type");
 		
 		$start_date_obj = new DateTime($_REQUEST['start_time']);
 		$end_date_obj = new DateTime($_REQUEST['end_time']);
@@ -51,9 +53,9 @@ try {
 			
 		}
 		else{
-			$interpreter_id = $_REQUEST['interpreter_id'];
-			$sql = "INSERT INTO events_rec (`start_date`, `end_date`,             `rec_type`, `event_length`, `interpreter_id`, `language_id`)
-									VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', '$interpreter_id', '$interpreter_id')";
+			$escaped_interpreter_id = mysql_real_escape_string($interpreter_id);
+			$sql = "INSERT INTO events_rec (`start_date`, `end_date`,             `rec_type`, `event_length`, `interpreter_id`,            `language_id`, `text`, `event_pid`)
+									VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', '$escaped_interpreter_id', '$escaped_interpreter_id', '', 0)";
 		}
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
@@ -66,6 +68,7 @@ try {
 	}
 
 	if($sql){
+		error_log($sql);
 		$result = $db->query($sql);
 	}
     $db = null; // close the database connection
@@ -79,7 +82,7 @@ catch(PDOException $e) {
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="0;url=mobile_scheduler.php?interpreter_id=<?php echo $interpreter_id ?>" />
+<meta http-equiv="refresh" content="url=mobile_scheduler.php" />
 </head>
 <body>
 <h1>Redirecting...</h1>
