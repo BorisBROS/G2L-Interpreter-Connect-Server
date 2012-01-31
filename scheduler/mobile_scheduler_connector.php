@@ -13,8 +13,7 @@ foreach($_REQUEST as $key=>$val) {
 
 $event_exists = array_key_exists('event_id', $_REQUEST);
 
-error_log($_REQUEST['interpreter_id']);
-if(!(array_key_exists("interpreter_id", $_REQUEST))){
+if(!array_key_exists('interpreter_id', $_REQUEST)){
 	echo("<pre>No interpreter id supplied</pre>");
 	die();
 }

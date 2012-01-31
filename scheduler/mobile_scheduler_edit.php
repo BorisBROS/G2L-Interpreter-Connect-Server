@@ -33,7 +33,7 @@
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php" method="post">
+        <form action="mobile_scheduler.php" method="post">
         	<?php 
         		 if(array_key_exists('event_id', $_REQUEST)){
         		 	$event_id = htmlentities($_REQUEST['event_id']);

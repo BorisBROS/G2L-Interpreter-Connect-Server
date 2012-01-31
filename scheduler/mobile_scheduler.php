@@ -12,31 +12,81 @@ try {
 
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
-	$parameter_names = array(
-		'phone_number', 
-		'interpreter_id'
-	);
-	
-	$parameters = array();
-	
-	foreach($parameter_names as $param_name ) { 
-		if(array_key_exists($param_name, $_REQUEST)){
-			$parameters[$param_name] = htmlentities($_REQUEST[$param_name]);
+	if(!array_key_exists('interpreter_id', $_REQUEST)){
+		if(array_key_exists('phone_number', $_REQUEST)){
+			//Use phone number to look up interpreter id.
+			$escaped_phone_number = $db->quote($phone_number);
+			$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
+			$sth = $db->query($find_interpreter_id_sql);
+			$result = $sth->fetch();
+			$interpreter_id = $result[0][0];
 		}
 		else{
-			$parameters[$param_name] = NULL;
+			echo("<pre>Could not get interpreter id</pre>");
+			die();
 		}
 	}
+	else{
+		$interpreter_id = $_REQUEST['interpreter_id'];
+	}
 	
-	extract( $parameters );
+	$event_exists = array_key_exists('event_id', $_REQUEST);
 	
-	if(!$interpreter_id && $phone_number){
-		//Use phone number to look up interpreter id.
-		$escaped_phone_number = $db->quote($phone_number);
-		$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
-		$sth = $db->query($find_interpreter_id_sql);
-		$result = $sth->fetch();
-		$interpreter_id = $result[0][0];
+	//If we are recieving a submission.
+	if(array_key_exists('submit', $_REQUEST)){
+
+		if(strcmp($_REQUEST['submit'], 'save') == 0){
+			
+			//Generate rec_type field:
+			$day_int_set = array();
+			for($i = 0; $i < sizeof($days); ++$i){
+				if(array_key_exists($days[$i], $_REQUEST)){
+					array_push($day_int_set, $i);
+				}
+			}
+			$rec_type = 'week_1___'.implode(',', $day_int_set).'#no';
+			//error_log("rec_type: $rec_type");
+			
+			$start_date_obj = new DateTime($_REQUEST['start_time']);
+			$end_date_obj = new DateTime($_REQUEST['end_time']);
+			$start_date = $start_date_obj->format('Y-m-d H:i:s');
+			
+			$event_length = strtotime($_REQUEST['end_time']) - strtotime($_REQUEST['start_time']);
+			if($event_length < 0){
+				$event_length += 60*60*24;
+			}
+			/*
+			error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
+			error_log("start_date: $start_date");
+			error_log("event_length: $event_length");
+			*/
+			if($event_exists){
+				$event_id = $db->quote($_REQUEST['event_id']);
+				$sql = "UPDATE events_rec 
+						SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = $event_length
+						WHERE `event_id`=$event_id";
+				
+			}
+			else{
+				$escaped_interpreter_id = $db->quote($interpreter_id);
+				$sql = "INSERT INTO events_rec (`start_date`, `end_date`,             `rec_type`, `event_length`, `interpreter_id`,            `language_id`)
+										VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', $escaped_interpreter_id, $escaped_interpreter_id)";
+			}
+		}
+		else if(strcmp($_REQUEST['submit'], 'delete') == 0){
+			if($event_exists){
+				$event_id = $db->quote($_REQUEST['event_id']);
+				$sql = "DELETE FROM events_rec WHERE `event_id`=$event_id";
+			}
+			else{
+				//Do Nothing
+			}
+		}
+	
+		if($sql){
+			error_log($sql);
+			$result = $db->query($sql);
+		}
 	}
 ?>
 <!DOCTYPE html> 
