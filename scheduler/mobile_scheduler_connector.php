@@ -17,10 +17,13 @@ try {
 	$sql = null;
 	
 	if(strcmp($_REQUEST['submit'], 'save') == 0){
+		
+		//Generate rec_type field:
+		$day_bit_set = array();
 		foreach($days as $day){
 			array_push($day_bit_set, array_key_exists($day, $_REQUEST));
 		}
-		$rec_type = 'week_1___'.impode(',', $day_bit_set).'#no';
+		$rec_type = 'week_1___'.implode(',', $day_bit_set).'#no';
 		echo($rec_type);
 		
 		$start_date_obj = new DateTime($_REQUEST['start_time']);
