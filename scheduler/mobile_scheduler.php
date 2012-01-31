@@ -19,19 +19,17 @@ try {
 			$parameters[$param_name] = htmlentities($_REQUEST[$param_name]);
 		}
 		else{
-			$parameters[$param_name] = null;
+			$parameters[$param_name] = NULL;
 		}
 	}
 	
 	extract( $parameters );
 	
-	if(!$phone_number && !$interpreter_id){
-		throw new Exception("Could not id interpreter.");
-	}
 	if(!$interpreter_id && $phone_number){
 		//Lookup interpreter_id in db
 		$interpreter_id = 2;
 	}
+	
 	
 ?>
 <!DOCTYPE html> 
@@ -110,14 +108,19 @@ try {
 		else{
 			$event_days = $start_date->format('m/d/Y');
 		}
-?>
-		<li><a href="mobile_scheduler_edit.php?<?php echo('event_id='.$event_id.'&interpreter_id='.$interpreter_id.'&'.implode('=1&', $days).'=1&start_time='.$event_start.'&end_time='.$event_end); ?>">
-			
-				<h3><?php echo("$event_start - $event_end"); ?></h3>
-				<p><strong><?php echo($event_days); ?></strong></p>
-				
-		</a></li>
-<?php
+		
+	
+		$read_only = $interpreter_id != NULL;
+		
+		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_days</strong></p>";
+		
+		if(!$read_only){
+			$editor_link = 'mobile_scheduler_edit.php?event_id='.$event_id.'&interpreter_id='.$interpreter_id.'&'.
+						implode('=1&', $days).'=1&start_time='.$event_start.'&end_time='.$event_end;
+			$li_content = "<a href='$editor_link'>$li_content</a>";
+		}
+
+		echo("<li>$li_content</li>");
     }
 $db = null; // close the database connection
 }

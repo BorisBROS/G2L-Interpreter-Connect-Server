@@ -32,7 +32,11 @@
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php?interpreter_id=<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" method="post">
+        <form action="mobile_scheduler_connector.php?interpreter_id=<?php 
+        
+        		echo(htmlentities($_REQUEST['interpreter_id']).'&event_id='.htmlentities($_REQUEST['event_id'])); 
+        		
+        		?>" method="post">
 
             <div data-role="fieldcontain">
                 <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"
