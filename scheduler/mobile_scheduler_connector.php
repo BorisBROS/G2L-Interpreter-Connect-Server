@@ -24,7 +24,7 @@ try {
 			array_push($day_bit_set, array_key_exists($day, $_REQUEST));
 		}
 		$rec_type = 'week_1___'.implode(',', $day_bit_set).'#no';
-		echo($rec_type);
+		error_log("rec_type: $rec_type");
 		
 		$start_date_obj = new DateTime($_REQUEST['start_time']);
 		$end_date_obj = new DateTime($_REQUEST['end_time']);
@@ -32,7 +32,8 @@ try {
 		$event_length_obj = $end_date_obj->diff($start_date_obj);
 		$event_length = $event_length_obj ->format('%s');
 		
-		echo($event_length);
+		error_log("start_date: $start_date");
+		error_log("event_length: $event_length");
 		
 		if(array_key_exists('event_id', $_REQUEST)){
 /*
@@ -70,7 +71,7 @@ catch(PDOException $e) {
 ?>
 <html>
 <head>
-<meta http-equiv="Refresh" content="url=mobile_scheduler.php?interpreter_id=2" />
+<meta http-equiv="Refresh" content="url=http://google.com" />
 </head>
 
 <body>
