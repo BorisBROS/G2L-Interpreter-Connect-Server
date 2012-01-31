@@ -53,14 +53,14 @@ try {
 		if($event_exists){
 			$event_id = $db->quote($_REQUEST['interpreter_id']);
 			$sql = "UPDATE events_rec 
-					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = '$event_length'
+					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = $event_length
 					WHERE `event_id`='$event_id'";
 			
 		}
 		else{
 			$escaped_interpreter_id = $db->quote($interpreter_id);
 			$sql = "INSERT INTO events_rec (`start_date`, `end_date`,             `rec_type`, `event_length`, `interpreter_id`,            `language_id`)
-									VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', '$escaped_interpreter_id', '$escaped_interpreter_id')";
+									VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', $escaped_interpreter_id, $escaped_interpreter_id)";
 		}
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
