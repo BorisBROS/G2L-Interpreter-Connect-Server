@@ -33,28 +33,31 @@ try {
 		$start_date = $start_date_obj->format('Y-m-d H:i:s');
 		
 		$event_length = strtotime($_REQUEST['end_time']) - strtotime($_REQUEST['start_time']);
+		if($event_length < 0){
+			$event_length += 60*60*24;
+		}
 		
 		error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
 		error_log("start_date: $start_date");
 		error_log("event_length: $event_length");
 		
 		if(array_key_exists('event_id', $_REQUEST)){
-/*
+
 			$sql = "UPDATE events_rec 
 					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = '$event_length'
 					WHERE `event_id`='$event_id'";
-		*/
+			
 		}
 		else{
-			//Add query...
+			$interpreter_id = $_REQUEST['interpreter_id'];
+			$sql = "INSERT INTO events_rec (`start_date`, `end_date`,             `rec_type`, `event_length`, `interpreter_id`, `language_id`)
+									VALUES ('$start_date', '9999-02-01 00:00:00', '$rec_type','$event_length', '$interpreter_id', '$interpreter_id')";
 		}
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
 		if(array_key_exists('event_id', $_REQUEST)){
 			$event_id = $_REQUEST['event_id'];
-			$sql = "UPDATE events_rec 
-					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = '$event_length'
-					WHERE `event_id`='$event_id'";
+			$sql = "DELETE FROM events_rec WHERE `event_id`='$event_id'";
 		}
 		else{
 			//Do Nothing
