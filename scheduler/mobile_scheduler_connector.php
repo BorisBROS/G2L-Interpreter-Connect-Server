@@ -51,10 +51,10 @@ try {
 		error_log("event_length: $event_length");
 		*/
 		if($event_exists){
-			$event_id = $db->quote($_REQUEST['interpreter_id']);
+			$event_id = $db->quote($_REQUEST['event_id']);
 			$sql = "UPDATE events_rec 
 					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = $event_length
-					WHERE `event_id`='$event_id'";
+					WHERE `event_id`=$event_id";
 			
 		}
 		else{
@@ -65,8 +65,8 @@ try {
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
 		if($event_exists){
-			$event_id = mysql_real_escape_string($_REQUEST['interpreter_id']);
-			$sql = "DELETE FROM events_rec WHERE `event_id`='$event_id'";
+			$event_id = $db->quote($_REQUEST['event_id']);
+			$sql = "DELETE FROM events_rec WHERE `event_id`=$event_id";
 		}
 		else{
 			//Do Nothing
