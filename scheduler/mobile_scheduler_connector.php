@@ -32,8 +32,8 @@ try {
 		$end_date_obj = new DateTime($_REQUEST['end_time']);
 		$start_date = $start_date_obj->format('Y-m-d H:i:s');
 		
-		$event_length_obj = $start_date_obj->diff($end_date_obj);
-		$event_length = $event_length_obj->format('%s');
+		$event_length = strtotime($_REQUEST['end_time']) - strtotime($_REQUEST['start_time']);
+		
 		error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
 		error_log("start_date: $start_date");
 		error_log("event_length: $event_length");
