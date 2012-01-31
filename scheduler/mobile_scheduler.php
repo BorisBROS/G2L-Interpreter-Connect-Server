@@ -2,6 +2,10 @@
 require_once('config.php');
 require_once('g2l_shared_code.php');
 
+//To disable caching:
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
 
@@ -29,7 +33,8 @@ try {
 		//Use phone number to look up interpreter id.
 		$escaped_phone_number = $db->quote($phone_number);
 		$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
-		$result = $db->query($find_interpreter_id_sql);
+		$sth = $db->query($find_interpreter_id_sql);
+		$result = $sth->fetch();
 		$interpreter_id = $result[0][0];
 	}
 ?>
