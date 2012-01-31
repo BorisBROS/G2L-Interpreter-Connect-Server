@@ -3,11 +3,14 @@
 require_once('config.php');
 require_once('g2l_shared_code.php');
 
+/*
 error_log("mobile_scheduler_connector");
 foreach($_REQUEST as $key=>$val) { 
 	error_log("Pkey: $key value: $val");
 }
+*/
 
+$event_id = $_REQUEST['event_id'] or -1;
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
@@ -36,13 +39,12 @@ try {
 		if($event_length < 0){
 			$event_length += 60*60*24;
 		}
-		
+		/*
 		error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
 		error_log("start_date: $start_date");
 		error_log("event_length: $event_length");
-		
-		if(array_key_exists('event_id', $_REQUEST)){
-
+		*/
+		if($event_id >= 0){
 			$sql = "UPDATE events_rec 
 					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = '$event_length'
 					WHERE `event_id`='$event_id'";
@@ -55,8 +57,7 @@ try {
 		}
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
-		if(array_key_exists('event_id', $_REQUEST)){
-			$event_id = $_REQUEST['event_id'];
+		if($event_id >= 0){
 			$sql = "DELETE FROM events_rec WHERE `event_id`='$event_id'";
 		}
 		else{
