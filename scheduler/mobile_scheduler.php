@@ -12,7 +12,8 @@ try {
 
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
-	if(!array_key_exists('interpreter_id', $_REQUEST)){
+	$interpreter_id_exists = array_key_exists('interpreter_id', $_REQUEST);
+	if(!$interpreter_id_exists){
 		if(array_key_exists('phone_number', $_REQUEST)){
 			//Use phone number to look up interpreter id.
 			$escaped_phone_number = $db->quote($phone_number);
@@ -20,10 +21,7 @@ try {
 			$sth = $db->query($find_interpreter_id_sql);
 			$result = $sth->fetch();
 			$interpreter_id = $result[0][0];
-		}
-		else{
-			echo("<pre>Could not get interpreter id</pre>");
-			die();
+			$interpreter_id_exists = true;
 		}
 	}
 	else{
@@ -125,8 +123,7 @@ try {
 	<form action="mobile_scheduler_edit.php" method="post" class="ui-body ui-body-a">
 		<fieldset>
         	<?php 
-        		 if(array_key_exists('interpreter_id', $_REQUEST)){
-        		 	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+        		 if($interpreter_id_exists){
         			echo("<input type='hidden' name='interpreter_id' value='$interpreter_id' />");
         		}
         	?>
@@ -142,7 +139,7 @@ try {
 	//		I would be dependent on the dhtmlx connector code.
 	
 	$sql = "SELECT * FROM events_rec";
-	if($interpreter_id){
+	if($interpreter_id_exists){
 		$sql .= " WHERE `interpreter_id`=$interpreter_id";
 	}
 	
@@ -176,11 +173,9 @@ try {
 			$event_day_string = $start_date->format('m/d/Y');
 		}
 		
-		$read_only = ($interpreter_id == NULL);
-		
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_day_string</strong></p>";
 		
-		if(!$read_only){
+		if(!$interpreter_id_exists){ //Show read-only list
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
 							'&'.implode('=1&', $event_days).'=1'.
 							"&start_time=$event_start&end_time=$event_end";
