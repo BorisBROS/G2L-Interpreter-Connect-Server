@@ -14,12 +14,12 @@ try {
 	if(!($interpreter_id_exists)){
 		if(array_key_exists('phone_number', $_REQUEST)){
 			//Use phone number to look up interpreter id.
-			$escaped_phone_number = $db->quote($phone_number);
+			$escaped_phone_number = $db->quote($_REQUEST['phone_number']);
 			$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
 			$sth = $db->query($find_interpreter_id_sql);
 			$result = $sth->fetch();
 			error_log($result);
-			$interpreter_id = $result['id'];
+			$interpreter_id = $result[0];
 			$interpreter_id_exists = true;
 		}
 	}
@@ -42,7 +42,6 @@ try {
 				}
 			}
 			$rec_type = 'week_1___'.implode(',', $day_int_set).'#no';
-			//error_log("rec_type: $rec_type");
 			
 			$start_date_obj = new DateTime($_REQUEST['start_time']);
 			$end_date_obj = new DateTime($_REQUEST['end_time']);
@@ -128,6 +127,8 @@ try {
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true">
 <?php 
+	//Here we build a link of the interpreter's availability times:
+
 	//TODO: Would it be better to do this using javascript and the recurring event connector?
 	//		My intuitions is that js would have some advantages, but it would require rewriting this and
 	//		I would be dependent on the dhtmlx connector code.
@@ -169,7 +170,8 @@ try {
 		
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_day_string</strong></p>";
 		
-		if(! ($interpreter_id_exists)){ //Show read-only list
+		if($interpreter_id_exists){
+			//Show list with edit links:
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
 							'&'.implode('=1&', $event_days).'=1'.
 							"&start_time=$event_start&end_time=$event_end";
