@@ -79,7 +79,7 @@ catch(PDOException $e) {
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="5;url=http://google.com" />
+<meta http-equiv="refresh" content="0;url=mobile_scheduler.php?interpreter_id=<?php echo $interpreter_id ?>" />
 </head>
 <body>
 <h1>Redirecting...</h1>

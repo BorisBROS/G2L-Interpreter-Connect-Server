@@ -52,10 +52,6 @@ try {
 		$('div').live('pagecreate', function() {
 			prettyPrint()
 		});
-		$(".edit_link").click(function(e) {
-			   e.preventDefault();
-			   $(this).parents('form').submit();
-			});
 	</script>
 	
 </head>
@@ -129,10 +125,7 @@ try {
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
 							'&'.implode('=1&', $days).'=1'.
 							"&start_time=$event_start&end_time=$event_end";
-			//$li_content = "<a href='$editor_link'>$li_content</a>";
-			$li_content = "<form action='$editor_link' method='post'>
-							<a href='#' class='edit_link'>$li_content</a>
-							</form>";
+			$li_content = "<a href='$editor_link'>$li_content</a>";
 		}
 
 		echo("<li>$li_content</li>");
