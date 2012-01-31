@@ -1,3 +1,4 @@
+<?php session_cache_limiter('nocache'); ?>
 <!DOCTYPE html> 
 <html lang="en"> 
 <head> 

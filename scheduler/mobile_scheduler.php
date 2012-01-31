@@ -5,6 +5,7 @@ require_once('g2l_shared_code.php');
 //To disable caching:
 //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 //header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+session_cache_limiter('nocache');
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
@@ -131,7 +132,7 @@ try {
 		
 		if(!$read_only){
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
-							'&'.implode('=1&', $days).'=1'.
+							'&'.implode('=1&', $event_days).'=1'.
 							"&start_time=$event_start&end_time=$event_end";
 			$li_content = "<a href='$editor_link'>$li_content</a>";
 		}
