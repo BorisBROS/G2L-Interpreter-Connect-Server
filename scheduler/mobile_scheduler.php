@@ -52,6 +52,10 @@ try {
 		$('div').live('pagecreate', function() {
 			prettyPrint()
 		});
+		$(".edit_link").click(function(e) {
+			   e.preventDefault();
+			   $(this).parents('form').submit();
+			});
 	</script>
 	
 </head>
@@ -127,7 +131,7 @@ try {
 							"&start_time=$event_start&end_time=$event_end";
 			//$li_content = "<a href='$editor_link'>$li_content</a>";
 			$li_content = "<form action='$editor_link' method='post'>
-							<button type='submit' name='submit' value='edit'>$li_content</button>
+							<a href='#' class='edit_link'>$li_content</a>
 							</form>";
 		}
 
