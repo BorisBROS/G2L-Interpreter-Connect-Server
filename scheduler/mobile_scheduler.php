@@ -1,13 +1,6 @@
 <?php 
 require_once('config.php');
-
-/**
- * This is used with the regular expression for parsing rec_type to produce a list of days.
- */
-function int_to_day($int){
-	$days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-	return $days[$int];
-}
+require_once('g2l_shared_code.php');
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
@@ -83,6 +76,9 @@ try {
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true">
 <?php 
+	//TODO: Would it be better to do this using javascript and the recurring event connector?
+	//		My intuitions is that js would have some advantages, but it would require rewriting this and
+	//		I would be dependent on the dhtmlx connector code.
 	$sql = "SELECT * FROM events_rec WHERE `interpreter_id`=$interpreter_id";
 	$result = $db->query($sql);
 	foreach ($result as $row) {
