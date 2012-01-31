@@ -1,4 +1,10 @@
-<?php session_cache_limiter('nocache'); ?>
+<?php
+session_cache_limiter('nocache'); 
+$mobile_scheduler_url = 'mobile_scheduler.php';
+if(array_key_exists('interpreter_id', $_REQUEST)){
+	$mobile_scheduler_url .= '?interpreter_id=' . htmlentities($_REQUEST['interpreter_id']);
+}
+?>
 <!DOCTYPE html> 
 <html lang="en"> 
 <head> 
@@ -28,20 +34,16 @@
 <div data-role="page" data-theme="c" id="droIndex"> 
 	<div data-role="header"> 
 		<h1>Add Time</h1>
-		<a href="mobile_scheduler.php?interpreter_id=<?php echo(htmlentities($_REQUEST['interpreter_id'])); ?>" data-icon="home" data-iconpos="notext">Home</a>
+		<a href="<?php echo $mobile_scheduler_url ?>" data-icon="home" data-iconpos="notext">Home</a>
 	</div>
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler.php" method="post">
+        <form action="<?php echo $mobile_scheduler_url ?>" method="post">
         	<?php 
         		 if(array_key_exists('event_id', $_REQUEST)){
         		 	$event_id = htmlentities($_REQUEST['event_id']);
         			echo("<input type='hidden' name='event_id' value='$event_id' />");
-        		}
-        		 if(array_key_exists('interpreter_id', $_REQUEST)){
-        		 	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
-        			echo("<input type='hidden' name='interpreter_id' value='$interpreter_id' />");
         		}
         	?>
             <div data-role="fieldcontain">
