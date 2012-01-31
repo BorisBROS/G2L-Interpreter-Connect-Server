@@ -29,11 +29,6 @@ try {
 		//Lookup interpreter_id in db
 		$interpreter_id = 2;
 	}
-	
-	//Create interpreter_id cookie
-	$expire=time()+60*60*24*30; //Expire in a month
-	setcookie("interpreter_id", $interpreter_id, $expire);
-	
 ?>
 <!DOCTYPE html> 
 <html lang="en"> 
@@ -70,6 +65,12 @@ try {
 	
 	<form action="mobile_scheduler_edit.php" method="post" class="ui-body ui-body-a">
 		<fieldset>
+        	<?php 
+        		 if(array_key_exists('interpreter_id', $_REQUEST)){
+        		 	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+        			echo("<input type='hidden' name='interpreter_id' value='$interpreter_id' />");
+        		}
+        	?>
 			<button type="submit" data-theme="b" name="submit" value="add">Add Time</button>
 		</fieldset>
 	</form>
@@ -121,9 +122,13 @@ try {
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_days</strong></p>";
 		
 		if(!$read_only){
-			$editor_link = 'mobile_scheduler_edit.php?event_id='.$event_id.'&'.
-						implode('=1&', $days).'=1&start_time='.$event_start.'&end_time='.$event_end;
-			$li_content = "<a href='$editor_link'>$li_content</a>";
+			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
+							'&'.implode('=1&', $days).'=1'.
+							"&start_time=$event_start&end_time=$event_end";
+			//$li_content = "<a href='$editor_link'>$li_content</a>";
+			$li_content = "<form action='$editor_link' method='post'>
+							<button type='submit' name='submit' value='edit'>$li_content</button>
+							</form>";
 		}
 
 		echo("<li>$li_content</li>");
