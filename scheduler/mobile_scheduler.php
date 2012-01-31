@@ -30,6 +30,9 @@ try {
 		$interpreter_id = 2;
 	}
 	
+	//Create interpreter_id cookie
+	$expire=time()+60*60*24*30; //Expire in a month
+	setcookie("interpreter_id", $interpreter_id, $expire);
 	
 ?>
 <!DOCTYPE html> 
@@ -65,7 +68,7 @@ try {
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
 	
-	<form action="mobile_scheduler_edit.php?<?php echo('interpreter_id='.$interpreter_id); ?>" method="get" class="ui-body ui-body-a">
+	<form action="mobile_scheduler_edit.php" method="post" class="ui-body ui-body-a">
 		<fieldset>
 			<button type="submit" data-theme="b" name="submit" value="add">Add Time</button>
 		</fieldset>
@@ -118,7 +121,7 @@ try {
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_days</strong></p>";
 		
 		if(!$read_only){
-			$editor_link = 'mobile_scheduler_edit.php?event_id='.$event_id.'&interpreter_id='.$interpreter_id.'&'.
+			$editor_link = 'mobile_scheduler_edit.php?event_id='.$event_id.'&'.
 						implode('=1&', $days).'=1&start_time='.$event_start.'&end_time='.$event_end;
 			$li_content = "<a href='$editor_link'>$li_content</a>";
 		}

@@ -32,23 +32,28 @@
 	
 	<div data-role="content" data-theme="c">
     
-        <form action="mobile_scheduler_connector.php?interpreter_id=<?php 
-        
-        		echo(htmlentities($_REQUEST['interpreter_id']).'&event_id='.htmlentities($_REQUEST['event_id'])); 
-        		
-        		?>" method="post">
-
+        <form action="mobile_scheduler_connector.php" method="post">
+        	<?php 
+        		 if(array_key_exists('event_id', $_REQUEST)){
+        		 	$event_id = htmlentities($_REQUEST['event_id']);
+        			echo("<input type='hidden' name='event_id' value='$event_id' />");
+        		}
+        	?>
             <div data-role="fieldcontain">
                 <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"
-                value="<?php 
-                echo(htmlentities($_REQUEST['start_time']));
+                "<?php 
+                if(array_key_exists('start_time', $_REQUEST)){
+                	echo('value='.htmlentities($_REQUEST['start_time']));
+                }
                 ?>" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 		    </div>
 			
             <div data-role="fieldcontain">
                 <label for="end_time">Until:</label><input name="end_time" id="end_time" type="date"
-                value="<?php 
-                echo(htmlentities($_REQUEST['end_time']));
+                "<?php 
+                if(array_key_exists('end_time', $_REQUEST)){
+                	echo('value='.htmlentities($_REQUEST['end_time']));
+                }
                 ?>" data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
 		    </div>
 

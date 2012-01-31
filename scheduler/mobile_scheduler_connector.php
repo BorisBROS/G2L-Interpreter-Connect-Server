@@ -76,11 +76,11 @@ catch(PDOException $e) {
 
 
 ?>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Refresh" content="url=http://google.com" />
+<meta http-equiv="refresh" content="5;url=http://google.com" />
 </head>
-
 <body>
 <h1>Redirecting...</h1>
 </body>
