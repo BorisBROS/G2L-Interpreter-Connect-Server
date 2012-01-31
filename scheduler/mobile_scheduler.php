@@ -98,24 +98,22 @@ try {
 		$event_end = $end_date->format('h:i A');
 		if($row['rec_type']){
 			$matches = array();
-			$event_days = preg_match(
-			            "|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|", $row['rec_type'], $matches);
+			preg_match("|.*_.?_.?_.?_(0?),?(1?),?(2?),?(3?),?(4?),?(5?),?(6?)#.*|", $row['rec_type'], $matches);
 			
 			// $matches[0] is the complete match so we throw that out (we only want the parenthised subpatterns)
 			array_shift($matches);
 			// remove empty strings (where digits were not found)
 			$matches = array_filter($matches);
 
-			$days = array_map("int_to_day", $matches);
+			$event_days = array_map("int_to_day", $matches);
 			
-			$event_days = implode(', ', $days);
+			$event_days = implode(', ', $event_days);
 		}
 		else{
 			$event_days = $start_date->format('m/d/Y');
 		}
 		
-	
-		$read_only = $interpreter_id != NULL;
+		$read_only = ($interpreter_id == NULL);
 		
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_days</strong></p>";
 		
