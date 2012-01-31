@@ -26,8 +26,11 @@ try {
 	extract( $parameters );
 	
 	if(!$interpreter_id && $phone_number){
-		//Lookup interpreter_id in db
-		$interpreter_id = 2;
+		//Use phone number to look up interpreter id.
+		$escaped_phone_number = $db->quote($phone_number);
+		$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
+		$result = $db->query($find_interpreter_id_sql);
+		$interpreter_id = $result[0][0];
 	}
 ?>
 <!DOCTYPE html> 
