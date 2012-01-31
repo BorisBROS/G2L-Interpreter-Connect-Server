@@ -77,7 +77,12 @@ try {
 	//TODO: Would it be better to do this using javascript and the recurring event connector?
 	//		My intuitions is that js would have some advantages, but it would require rewriting this and
 	//		I would be dependent on the dhtmlx connector code.
-	$sql = "SELECT * FROM events_rec WHERE `interpreter_id`=$interpreter_id";
+	
+	$sql = "SELECT * FROM events_rec";
+	if($interpreter_id){
+		$sql .= " WHERE `interpreter_id`=$interpreter_id";
+	}
+	
 	$result = $db->query($sql);
 	foreach ($result as $row) {
 		 
