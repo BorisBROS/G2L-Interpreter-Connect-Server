@@ -10,9 +10,9 @@ foreach($_REQUEST as $key=>$val) {
 }
 */
 
-$event_id = $_REQUEST['event_id'] or -1;
+$event_exists = array_key_exists('event_id', $_REQUEST);
 
-$interpreter_id = $_REQUEST['interpreter_id'] or -1;
+$interpreter_id = $_REQUEST['interpreter_id'] or die();
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
@@ -46,7 +46,8 @@ try {
 		error_log("start_date: $start_date");
 		error_log("event_length: $event_length");
 		*/
-		if($event_id >= 0){
+		if($event_exists){
+			$event_id = mysql_real_escape_string($_REQUEST['interpreter_id']);
 			$sql = "UPDATE events_rec 
 					SET `start_date` = '$start_date', `rec_type` = '$rec_type', `event_length` = '$event_length'
 					WHERE `event_id`='$event_id'";
@@ -59,7 +60,8 @@ try {
 		}
 	}
 	else if(strcmp($_REQUEST['submit'], 'delete') == 0){
-		if($event_id >= 0){
+		if($event_exists){
+			$event_id = mysql_real_escape_string($_REQUEST['interpreter_id']);
 			$sql = "DELETE FROM events_rec WHERE `event_id`='$event_id'";
 		}
 		else{
@@ -77,12 +79,15 @@ catch(PDOException $e) {
     error_log($e->getMessage());
 }
 
+//To disable caching:
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="url=mobile_scheduler.php" />
+<meta http-equiv="refresh" content="0;url=mobile_scheduler.php" />
 </head>
 <body>
 <h1>Redirecting...</h1>
