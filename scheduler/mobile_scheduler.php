@@ -120,15 +120,15 @@ try {
 
 			$event_days = array_map("int_to_day", $matches);
 			
-			$event_days = implode(', ', $event_days);
+			$event_day_string = implode(', ', $event_days);
 		}
 		else{
-			$event_days = $start_date->format('m/d/Y');
+			$event_day_string = $start_date->format('m/d/Y');
 		}
 		
 		$read_only = ($interpreter_id == NULL);
 		
-		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_days</strong></p>";
+		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_day_string</strong></p>";
 		
 		if(!$read_only){
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
