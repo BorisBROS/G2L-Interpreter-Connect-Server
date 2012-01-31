@@ -19,16 +19,19 @@ try {
 	if(strcmp($_REQUEST['submit'], 'save') == 0){
 		
 		//Generate rec_type field:
-		$day_bit_set = array();
-		foreach($days as $day){
-			array_push($day_bit_set, array_key_exists($day, $_REQUEST));
+		$day_int_set = array();
+		for($i = 0; $i < sizeof($days); ++$i)
+			if(array_key_exists($days[$i], $_REQUEST)){
+				array_push($day_int_set, $i);
+			}
 		}
-		$rec_type = 'week_1___'.implode(',', $day_bit_set).'#no';
+		$rec_type = 'week_1___'.implode(',', $day_int_set).'#no';
 		error_log("rec_type: $rec_type");
 		
 		$start_date_obj = new DateTime($_REQUEST['start_time']);
 		$end_date_obj = new DateTime($_REQUEST['end_time']);
 		$start_date = $start_date_obj->format('Y-m-d H:i:s');
+		error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
 		$event_length_obj = $end_date_obj->diff($start_date_obj);
 		$event_length = $event_length_obj ->format('%s');
 		
