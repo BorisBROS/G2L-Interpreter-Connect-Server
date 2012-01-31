@@ -38,6 +38,10 @@
         		 	$event_id = htmlentities($_REQUEST['event_id']);
         			echo("<input type='hidden' name='event_id' value='$event_id' />");
         		}
+        		 if(array_key_exists('interpreter_id', $_REQUEST)){
+        		 	$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
+        			echo("<input type='hidden' name='interpreter_id' value='$interpreter_id' />");
+        		}
         	?>
             <div data-role="fieldcontain">
                 <label for="start_time">I will be available at:</label><input name="start_time" id="start_time" type="date"

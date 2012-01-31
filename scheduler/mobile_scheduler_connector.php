@@ -12,7 +12,11 @@ foreach($_REQUEST as $key=>$val) {
 
 $event_exists = array_key_exists('event_id', $_REQUEST);
 
-$interpreter_id = $_REQUEST['interpreter_id'] or die();
+if(!array_key_exists('interpreter_id', $_REQUEST)){
+	echo("<pre>No interpreter id supplied</pre>");
+	die();
+}
+$interpreter_id = $_REQUEST['interpreter_id'];
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
