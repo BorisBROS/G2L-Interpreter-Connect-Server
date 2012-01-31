@@ -18,7 +18,7 @@ try {
 			$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
 			$sth = $db->query($find_interpreter_id_sql);
 			$result = $sth->fetch();
-			$interpreter_id = $result[0][0];
+			$interpreter_id = $result[0];
 			$interpreter_id_exists = true;
 		}
 	}
@@ -168,7 +168,7 @@ try {
 		
 		$li_content = "<h3>$event_start - $event_end</h3><p><strong>$event_day_string</strong></p>";
 		
-		if(!$interpreter_id_exists){ //Show read-only list
+		if(! ($interpreter_id_exists)){ //Show read-only list
 			$editor_link = "mobile_scheduler_edit.php?event_id=$event_id&interpreter_id=$interpreter_id".
 							'&'.implode('=1&', $event_days).'=1'.
 							"&start_time=$event_start&end_time=$event_end";
