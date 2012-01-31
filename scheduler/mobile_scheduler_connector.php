@@ -20,7 +20,7 @@ try {
 		
 		//Generate rec_type field:
 		$day_int_set = array();
-		for($i = 0; $i < sizeof($days); ++$i)
+		for($i = 0; $i < sizeof($days); ++$i){
 			if(array_key_exists($days[$i], $_REQUEST)){
 				array_push($day_int_set, $i);
 			}
@@ -31,7 +31,7 @@ try {
 		$start_date_obj = new DateTime($_REQUEST['start_time']);
 		$end_date_obj = new DateTime($_REQUEST['end_time']);
 		$start_date = $start_date_obj->format('Y-m-d H:i:s');
-		error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
+		
 		$event_length_obj = $start_date_obj->diff($end_date_obj);
 		$event_length = $event_length_obj ->format('%s');
 		
