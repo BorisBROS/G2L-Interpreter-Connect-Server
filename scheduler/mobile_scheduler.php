@@ -11,14 +11,14 @@ try {
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 	$interpreter_id_exists = array_key_exists('interpreter_id', $_REQUEST);
-	if(!($interpreter_id_exists)){
+	if(!$interpreter_id_exists){
 		if(array_key_exists('phone_number', $_REQUEST)){
 			//Use phone number to look up interpreter id.
 			$escaped_phone_number = $db->quote($_REQUEST['phone_number']);
 			$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
 			$sth = $db->query($find_interpreter_id_sql);
 			$result = $sth->fetch();
-			error_log($result);
+			//TODO: Check if the phonenumber is not found and let the user know if that is the case.
 			$interpreter_id = $result[0];
 			$interpreter_id_exists = true;
 		}
