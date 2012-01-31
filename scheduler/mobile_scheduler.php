@@ -3,8 +3,6 @@ require_once('config.php');
 require_once('g2l_shared_code.php');
 
 //To disable caching:
-//header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 session_cache_limiter('nocache');
 
 try {
@@ -53,11 +51,6 @@ try {
 			if($event_length < 0){
 				$event_length += 60*60*24;
 			}
-			/*
-			error_log("end date:".$end_date_obj->format('Y-m-d H:i:s'));
-			error_log("start_date: $start_date");
-			error_log("event_length: $event_length");
-			*/
 			if($event_exists){
 				$event_id = $db->quote($_REQUEST['event_id']);
 				$sql = "UPDATE events_rec 
