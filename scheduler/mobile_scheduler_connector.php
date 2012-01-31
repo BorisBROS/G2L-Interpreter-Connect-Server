@@ -3,12 +3,12 @@
 require_once('config.php');
 require_once('g2l_shared_code.php');
 session_cache_limiter('nocache');
-/*
+
 error_log("mobile_scheduler_connector");
 foreach($_REQUEST as $key=>$val) { 
 	error_log("Pkey: $key value: $val");
 }
-*/
+
 
 $event_exists = array_key_exists('event_id', $_REQUEST);
 
