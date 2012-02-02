@@ -1,6 +1,14 @@
 <?php 
 require_once('config.php');
-require_once('g2l_shared_code.php');
+
+$days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+/**
+ * This is used with the regular expression for parsing rec_type to produce a list of days.
+ */
+function int_to_day($int){
+	global $days;
+	return $days[$int];
+}
 
 //To disable caching:
 session_cache_limiter('nocache');
