@@ -27,7 +27,7 @@ try {
 			$sth = $db->query($find_interpreter_id_sql);
 			//Check if the phonenumber is not found and let the user know if that is the case.
 			if($sth->rowCount() == 0){
-				throw new Exception("Could not id interpreter with phonenumber: $phone_number");
+				throw new Exception("Could not id interpreter with phonenumber: $escaped_phone_number");
 			}
 			$result = $sth->fetch();
 			$interpreter_id = $result[0];
@@ -35,7 +35,7 @@ try {
 		}
 	}
 	else{
-		$interpreter_id = $_REQUEST['interpreter_id'];
+		$interpreter_id = htmlentities($_REQUEST['interpreter_id']);
 	}
 	
 	$event_exists = array_key_exists('event_id', $_REQUEST);
