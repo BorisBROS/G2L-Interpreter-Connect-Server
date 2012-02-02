@@ -57,6 +57,11 @@
 	}
 	
 	$result = $db->query($sql);
+	
+	if($result->rowCount() == 0){
+		echo("<li>No availabilities found.</li>");
+	}
+	
 	foreach ($result as $row) {
 		 
 		$event_id = $row['event_id'];

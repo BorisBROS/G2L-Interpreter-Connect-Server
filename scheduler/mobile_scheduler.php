@@ -27,7 +27,7 @@ try {
 			$sth = $db->query($find_interpreter_id_sql);
 			//Check if the phonenumber is not found and let the user know if that is the case.
 			if($sth->rowCount() == 0){
-				throw Exception("Could not id interpreter with phonenumber: $phone_number");
+				throw new Exception("Could not id interpreter with phonenumber: $phone_number");
 			}
 			$result = $sth->fetch();
 			$interpreter_id = $result[0];
