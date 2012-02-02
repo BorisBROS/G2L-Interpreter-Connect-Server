@@ -88,7 +88,7 @@ try {
 		}
 	}
 	
-	include(mobile_scheduler_schedule.php);
+	include('mobile_scheduler_schedule.php'');
 	
 	$db = null; // close the database connection
 }
