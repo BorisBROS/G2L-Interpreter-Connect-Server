@@ -1,6 +1,9 @@
 <?php 
 require_once('config.php');
 
+//To disable caching:
+session_cache_limiter('nocache');
+
 $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 /**
  * This is used with the regular expression for parsing rec_type to produce a list of days.
@@ -9,9 +12,6 @@ function int_to_day($int){
 	global $days;
 	return $days[$int];
 }
-
-//To disable caching:
-session_cache_limiter('nocache');
 
 try {
 	$db = new PDO("mysql:host=$mysql_server;dbname=$mysql_db", $mysql_user, $mysql_pass);
@@ -25,8 +25,11 @@ try {
 			$escaped_phone_number = $db->quote($_REQUEST['phone_number']);
 			$find_interpreter_id_sql = "SELECT `id` FROM interpreters WHERE `g2lphone` = $escaped_phone_number";
 			$sth = $db->query($find_interpreter_id_sql);
+			//Check if the phonenumber is not found and let the user know if that is the case.
+			if($sth->rowCount() == 0){
+				throw Exception("Could not id interpreter with phonenumber: $phone_number");
+			}
 			$result = $sth->fetch();
-			//TODO: Check if the phonenumber is not found and let the user know if that is the case.
 			$interpreter_id = $result[0];
 			$interpreter_id_exists = true;
 		}
@@ -83,7 +86,7 @@ try {
 		}
 	
 		if($sql){
-			error_log($sql);
+			//error_log($sql);
 			$result = $db->query($sql);
 		}
 	}
@@ -93,6 +96,11 @@ try {
 	$db = null; // close the database connection
 }
 catch(PDOException $e) {
-    echo $e->getMessage();
+	$error_message = 'PDOException:'.$e->getMessage().'\n';
+	include('mobile_scheduler_error.php');
+}
+catch(Exception $e) {
+	$error_message = 'Exception:'.$e->getMessage().'\n';
+	include('mobile_scheduler_error.php');
 }
 ?>
