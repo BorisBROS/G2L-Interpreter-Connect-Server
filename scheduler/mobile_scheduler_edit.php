@@ -40,6 +40,15 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	<div data-role="content" data-theme="c">
     
         <form action="<?php echo $mobile_scheduler_url ?>" method="post">
+        
+            <div class="ui-body ui-body-b">
+    		<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><button type="submit" data-theme="d" name="submit" value="delete">Delete</button></div>
+				<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="save">Save</button></div>
+    	    </fieldset>
+    		</div>
+        
+        
         	<?php 
         		 if(array_key_exists('event_id', $_REQUEST)){
         		 	$event_id = htmlentities($_REQUEST['event_id']);
@@ -81,13 +90,6 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 			 		?>
 			    </fieldset>
 			</div>
-            
-        	<div class="ui-body ui-body-b">
-    		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><button type="submit" data-theme="d" name="submit" value="delete">Delete</button></div>
-				<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="save">Save</button></div>
-    	    </fieldset>
-    		</div>
         
 		</form>
         
