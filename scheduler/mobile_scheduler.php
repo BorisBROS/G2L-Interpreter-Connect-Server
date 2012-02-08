@@ -62,6 +62,9 @@ try {
 			if($event_length < 0){
 				$event_length += 60*60*24;
 			}
+			if($event_length < 0){
+				throw new Exception("Bad event length: $event_length");
+			}
 			if($event_exists){
 				$event_id = $db->quote($_REQUEST['event_id']);
 				$sql = "UPDATE events_rec 
@@ -90,7 +93,7 @@ try {
 			$result = $db->query($sql);
 		}
 	}
-	
+
 	include('mobile_scheduler_schedule.php');
 	
 	$db = null; // close the database connection
