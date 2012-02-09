@@ -16,6 +16,7 @@ function int_to_day($int){
 if(array_key_exists('version', $_REQUEST)){
 	if($_REQUEST['version'] < 2){
 		echo("<html><body><a href='../G2L%20Interpreter%20Connect.apk'>Click here to update the G2L Interpreter Connect app</a></body></html> ");
+		die();
 	}
 }
 
