@@ -82,6 +82,7 @@ function send_requests($language, $request_id) {
 	AND NOW() > events_rec.start_date AND NOW() < events_rec.end_date
 	AND (events_rec.rec_type=''
 	     OR (TIMEDIFF(CURTIME(), TIME(events_rec.start_date)) < SEC_TO_TIME(events_rec.event_length)
+		 AND TIMEDIFF(CURTIME(), TIME(events_rec.start_date)) >= 0
 		 AND LOCATE('week', events_rec.rec_type) > 0
 		 AND LOCATE(DAYOFWEEK(CURDATE()) - 1,
 		            SUBSTRING_INDEX(SUBSTR(events_rec.rec_type,
