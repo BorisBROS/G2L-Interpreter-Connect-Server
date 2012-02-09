@@ -75,7 +75,7 @@ function send_requests($language, $request_id) {
 	- SEC_TO_TIME might throw warnings for extremely long events, I don't think we need to worry about that though.
 	- Our rows are returned in random order, so the same interpreter doesn't get first dibs.
 	*/
-	$query = "SELECT interpreters.id, interpreters.g2lphone FROM interpreters
+	$query = "SELECT DISTINCT interpreters.id, interpreters.g2lphone FROM interpreters
 	JOIN events_rec ON interpreters.id = events_rec.interpreter_id
 	WHERE `active` = true
 	AND (`language1` = '$escaped_language_string' OR `language2` = '$escaped_language_string')
