@@ -343,7 +343,7 @@ if( array_key_exists('debug', $_REQUEST) ) {
 	echo("Phone: $phone\n");
 	echo("Message: $message\n");
 }
-
+error_log("Phone: $phone Message: $message");
 $messageHandled = handle_interpreter_message($message, $phone);
 
 if( !$messageHandled ) {
