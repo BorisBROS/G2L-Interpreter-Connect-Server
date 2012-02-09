@@ -96,7 +96,7 @@ function send_requests($language, $request_id) {
 	AND (`language1` = '$escaped_language_string' OR `language2` = '$escaped_language_string')";
 	*/
 
-	//error_log($query);
+	error_log('Available Interpreters Query:' . $query);
 
 	//TODO: Maybe add a clause to see if they recently rejected a request?
 	//(this would be a reason to do something with reject messages)
