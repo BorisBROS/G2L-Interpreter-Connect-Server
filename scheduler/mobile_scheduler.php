@@ -15,9 +15,14 @@ function int_to_day($int){
 
 if(array_key_exists('version', $_REQUEST)){
 	if($_REQUEST['version'] < 1){
-		echo("<html><body><a href='../G2L%20Interpreter%20Connect.apk'>Click here to update the G2L Interpreter Connect app</a></body></html> ");
+		echo("<html><head><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><a href='../G2L%20Interpreter%20Connect.apk'>Click here to update the G2L Interpreter Connect app</a></body></html> ");
 		die();
 	}
+}
+else if(array_key_exists('phone_number', $_REQUEST)){
+	//TODO Temporairy code, remove this.
+	echo("<html><head><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><a href='../G2L%20Interpreter%20Connect.apk'>Click here to update the G2L Interpreter Connect app</a></body></html> ");
+	die();
 }
 
 try {
