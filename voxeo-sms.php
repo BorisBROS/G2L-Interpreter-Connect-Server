@@ -352,6 +352,7 @@ if( !$messageHandled ) {
 
 if( !$messageHandled ) {
 	$failureMessage = "We cannot yet process your request.  To test our system, please text only the word 'spanish' to this number.";
+	echo($failureMessage);
 	// TODO put then back in: send_sms_to_phone($failureMessage, $phone);
 	error_log("Failed to parse $message");
 }
