@@ -23,7 +23,11 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.js"></script>
 	<script type="text/javascript" src="http://dev.jtsage.com/gpretty/prettify.js"></script>
 	<link type="text/css" href="http://dev.jtsage.com/gpretty/prettify.css" rel="stylesheet" />
-
+	<script type="text/javascript">
+		$('div').live('pagecreate', function() {
+			prettyPrint()
+		});
+	</script>
 	
 </head>
 <body>
@@ -40,7 +44,10 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
     }
     Date.prototype.print12HourTime = function(h){
         
-        hour = (this.getHours() - 1) % 12 + 1;
+        hour = this.getHours() % 12;
+        if(hour == 0){
+			hour = 12;
+        }
         minute =  this.getMinutes();
         ampm = 'AM';
         if (this.getHours() > 12){
@@ -57,8 +64,6 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
         	$('#start_time').val( cur_date.print12HourTime() );
         	$('#end_time').val( cur_date.addHours(1).print12HourTime() );
         }
-        
-		prettyPrint()
 	});
 	</script>
 	<form action="<?php echo $mobile_scheduler_url ?>" method="post">
