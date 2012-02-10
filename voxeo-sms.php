@@ -167,7 +167,7 @@ function send_requests($language, $request_id) {
 
 		// Throttling... 
 		if($requests_sent < $available_interpreters){
-			sleep ( 40 );//wait N seconds between requests
+			sleep ( 20 );//wait N seconds between requests
 		}
 	}
 	return $requests_sent;
