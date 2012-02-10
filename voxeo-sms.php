@@ -117,7 +117,8 @@ function send_requests($language, $request_id) {
 	header("Connection: close");
 	ignore_user_abort();
 	ob_start();
-	echo("Attempting to send  requests to $available_interpreters available interpreters");
+	echo("Tratando de enviar la petición a $available_interpreters interprete(s) disponibles.");
+	//echo("Attempting to send  requests to $available_interpreters available interpreters");
 	$size = ob_get_length();
 	header("Content-Length: $size");
 	flush();
@@ -351,8 +352,9 @@ if( !$messageHandled ) {
 }
 
 if( !$messageHandled ) {
-	$failureMessage = "We cannot yet process your request.  To test our system, please text only the word 'spanish' to this number.";
-	send_sms_to_phone($failureMessage, $phone);
+	$failureMessage = "We cannot yet process your request.  Please text only the word 'spanish' to this number.";
+	echo($failureMessage);
+	#send_sms_to_phone($failureMessage, $phone);
 	error_log("Failed to parse $message");
 }
 
