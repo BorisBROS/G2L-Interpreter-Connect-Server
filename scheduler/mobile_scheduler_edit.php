@@ -23,6 +23,16 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.js"></script>
 	<script type="text/javascript" src="http://dev.jtsage.com/gpretty/prettify.js"></script>
 	<link type="text/css" href="http://dev.jtsage.com/gpretty/prettify.css" rel="stylesheet" />
+
+	
+</head>
+<body>
+
+<div data-role="page" data-theme="c" id="droIndex"> 
+	<!--   <div data-role="header"> 
+		<h1>Add Time</h1>
+		<a href="<?php echo $mobile_scheduler_url ?>" data-icon="home" data-iconpos="notext">Home</a>
+	</div>-->
 	<script type="text/javascript">
     Date.prototype.addHours= function(h){
         this.setHours(this.getHours()+h);
@@ -51,16 +61,6 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 		prettyPrint()
 	});
 	</script>
-	
-</head>
-<body>
-
-<div data-role="page" data-theme="c" id="droIndex"> 
-	<!--   <div data-role="header"> 
-		<h1>Add Time</h1>
-		<a href="<?php echo $mobile_scheduler_url ?>" data-icon="home" data-iconpos="notext">Home</a>
-	</div>-->
-	
 	<form action="<?php echo $mobile_scheduler_url ?>" method="post">
 	
 	<div class="ui-body ui-body-b">
