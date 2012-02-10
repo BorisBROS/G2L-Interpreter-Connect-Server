@@ -31,22 +31,21 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	
 </head>
 <body>
+<form action="<?php echo $mobile_scheduler_url ?>" method="post">
 <div data-role="page" data-theme="c" id="droIndex"> 
-	<div data-role="header"> 
+	<!--   <div data-role="header"> 
 		<h1>Add Time</h1>
 		<a href="<?php echo $mobile_scheduler_url ?>" data-icon="home" data-iconpos="notext">Home</a>
-	</div>
+	</div>-->
+	
+	<div class="ui-body ui-body-b">
+	<fieldset class="ui-grid-a">
+		<div class="ui-block-a"><button data-theme="c" data-icon="home" onclick="window.location.href='http://www.google.com'">Back</button></div>
+		<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="delete">Delete</button></div>
+	</fieldset>
+    </div>
 	
 	<div data-role="content" data-theme="c">
-    
-        <form action="<?php echo $mobile_scheduler_url ?>" method="post">
-        
-            <div class="ui-body ui-body-b">
-    		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><button type="submit" data-theme="d" name="submit" value="delete">Delete</button></div>
-				<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="save">Save</button></div>
-    	    </fieldset>
-    		</div>
         
         
         	<?php 
@@ -90,10 +89,16 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 			 		?>
 			    </fieldset>
 			</div>
-        
-		</form>
-        
+
 	</div>
+	
+    <div class="ui-body ui-body-b">
+    <fieldset class="ui-grid-a">
+		 <div class="ui-block"><button type="submit" data-theme="d" name="submit" value="save">Save</button></div>
+    </fieldset>
+	</div>
+	
 </div>
+</form>
 </body>
 </html>
