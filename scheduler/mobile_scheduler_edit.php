@@ -24,9 +24,30 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	<script type="text/javascript" src="http://dev.jtsage.com/gpretty/prettify.js"></script>
 	<link type="text/css" href="http://dev.jtsage.com/gpretty/prettify.css" rel="stylesheet" />
 	<script type="text/javascript">
-		$('div').live('pagecreate', function() {
-			prettyPrint()
-		});
+    Date.prototype.addHours= function(h){
+        this.setHours(this.getHours()+h);
+        return this;
+    }
+    Date.prototype.print12HourTime = function(h){
+        
+        hour = (this.getHours() - 1) % 12 + 1;
+        minute =  this.getMinutes();
+        ampm = 'AM';
+        if (this.getHours() > 12){
+            ampm = 'PM';
+        }
+        return hour + ':' + minute + ' ' + ampm;
+    }
+
+	$('div').live('pagecreate', function() {
+        
+        cur_date = new Date();
+        
+        $('#start_time').val( cur_date.print12HourTime() );
+        $('#end_time').val( cur_date.addHours(1).print12HourTime() );
+        
+		prettyPrint()
+	});
 	</script>
 	
 </head>
@@ -62,7 +83,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
                 if(array_key_exists('start_time', $_REQUEST)){
                 	echo('value="'.htmlentities($_REQUEST['start_time']).'"');
                 }
-                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true}' />
 		    </div>
 			
             <div data-role="fieldcontain">
@@ -71,7 +92,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
                 if(array_key_exists('end_time', $_REQUEST)){
                 	echo('value="'.htmlentities($_REQUEST['end_time']).'"');
                 }
-                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12}' />
+                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true}' />
 		    </div>
 
     		<div  data-role="fieldcontain">
@@ -96,7 +117,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	
     <div class="ui-body ui-body-b">
     <fieldset class="ui-grid-a">
-		 <div class="ui-block"><button type="submit" data-theme="d" name="submit" value="save">Save</button></div>
+		 <div class="ui-block"><button type="submit" data-theme="b" name="submit" value="save">Save</button></div>
     </fieldset>
 	</div>
 	</form>
