@@ -53,119 +53,7 @@ function detect_requested_language($message) {
 	} 
 	return NULL;
 }
-/**
- * 
- * Sent requests with the given id to all available interpreters that speak the given language.
- * @param string $language
- * The language is used to select the correct type of interpreters from the database
- * and it also appears in the request message sent to the interpreter.
- * @param integer $request_id
- * The request id is needed so we know which request the interpreter is replying to
- * and it provides a bit of security to the system as well.
- * @return
- * number of requests sent
- */
-function send_requests($language, $request_id) {
-	
-	$escaped_language_string = mysql_real_escape_string($language);
-	/*
-	This ugly beast is used to select currently ocurring events from possibly recurring events.
-	Some notes about the query:
-	- In the case of recurring events it only works for weekly events without parents or children (that recur indefinately).
-	- SEC_TO_TIME might throw warnings for extremely long events, I don't think we need to worry about that though.
-	- Our rows are returned in random order, so the same interpreter doesn't get first dibs.
-	*/
-	$query = "SELECT DISTINCT interpreters.id, interpreters.g2lphone FROM interpreters
-	JOIN events_rec ON interpreters.id = events_rec.interpreter_id
-	WHERE `active` = true
-	AND (`language1` = '$escaped_language_string' OR `language2` = '$escaped_language_string')
-	AND NOW() > events_rec.start_date AND NOW() < events_rec.end_date
-	AND (events_rec.rec_type=''
-	     OR (TIMEDIFF(CURTIME(), TIME(events_rec.start_date)) < SEC_TO_TIME(events_rec.event_length)
-		 AND LOCATE('week', events_rec.rec_type) > 0
-		 AND LOCATE(DAYOFWEEK(CURDATE()) - 1,
-		            SUBSTRING_INDEX(SUBSTR(events_rec.rec_type,
-		                                   CHAR_LENGTH(events_rec.rec_type) - LOCATE('_', REVERSE(events_rec.rec_type)) + 2),
-	                                    '#', 1)) > 0))
-	ORDER BY RAND()";
 
-	/*
-	Simple version without scheduling:
-	$query = "SELECT `id`, `g2lphone` FROM interpreters
-	WHERE `active` = true
-	AND (`language1` = '$escaped_language_string' OR `language2` = '$escaped_language_string')";
-	*/
-
-	error_log('Available Interpreters Query:' . $query);
-
-	//TODO: Maybe add a clause to see if they recently rejected a request?
-	//(this would be a reason to do something with reject messages)
-
-	$result = mysql_query($query) or die(mysql_error());
-	$available_interpreters = mysql_num_rows($result);
-	$requests_sent = 0;
-
-	// Voxeo might not like how long send_requests takes
-	// so we close the connection early
-	// http://stackoverflow.com/questions/138374/close-a-connection-early
-	// http://www.php.net/manual/en/features.connection-handling.php#71172
-	// http://php.net/manual/en/function.flush.php
-	// Unfortunately this doesn't seem to work, but the ignore_user_abort might be important
-	// it might be better to do this in a separate process using a shell command.
-	ob_end_clean();
-	header("Connection: close");
-	ignore_user_abort();
-	ob_start();
-	echo("Attempting to send  requests to $available_interpreters available interpreters");
-	$size = ob_get_length();
-	header("Content-Length: $size");
-	flush();
-	ob_flush();
-	ob_end_flush(); // Strange behaviour, will not work
-	flush();	// Unless both are called !
-
-	while ($row = mysql_fetch_assoc($result)) {
-
-		$interpreter_id = $row["id"];
-		$interpreter_phone = $row["g2lphone"];
-
-		
-		//See if a request was sent to interpreter in the last 5 minutes...
-
-		//TODO: Track accept/finish activity as well.
-		//	This way we can avoid sending to interpreters who are currently interpreting,
-
-		//Should this be a transaction?
-		$interpreter_busy_query = "SELECT * FROM requests_sent
-		WHERE `interpreter_id` = $interpreter_id
-		AND TIMESTAMPDIFF(SECOND, `time-stamp`, NOW()) < 120";
-
-		$interpreter_busy_result = mysql_query($interpreter_busy_query) or die(mysql_error());
-
-		if(mysql_num_rows($interpreter_busy_result) > 0) { //This interpreter is busy
-			continue;
-		}
-
-		error_log("sending request to " . $row["g2lphone"]);
-
-		// %2B is char code for +, which means request interpretation
-		$requestSMS = '%2B ' . $request_id . ' ' . ucfirst($language);
-		send_sms_to_phone($requestSMS, $interpreter_phone);
-
-		//Before doing the rest we might want to check that the the sms_sending was a success.
-
-		$request_sent_query = "INSERT INTO requests_sent (`request_id`, `interpreter_id`) VALUES ($request_id, $interpreter_id)";
-		$result2 = mysql_query($request_sent_query) or die(mysql_error());
-
-		$requests_sent++;
-
-		// Throttling... 
-		if($requests_sent < $available_interpreters){
-			sleep ( 30 );//wait 30 seconds between requests
-		}
-	}
-	return $requests_sent;
-}
 /**
  *  
  * This function tries to handle a message with the assumption it is an interpretation request.
@@ -206,7 +94,14 @@ function handle_request($message, $phone) {
 
 		echo("Request ID: $request_id\n");
 
-		send_requests($language, $request_id);
+		// BDR: Moved this to a separate script so we can launch it in the 
+		// background and run it as a separate thread
+		// send_requests($language, $request_id);
+		// TODO
+		// TODO: Are we sure we want to ignore all output?
+		// TODO
+		exec("php send-requests-thread.php --language $language --requestid ".
+			"$request_id --from $phone &> /dev/null &");
 
 		return true;
 	} else {
