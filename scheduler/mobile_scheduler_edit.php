@@ -40,7 +40,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	
 	<div class="ui-body ui-body-b">
 	<fieldset class="ui-grid-a">
-		<div class="ui-block-a"><button data-theme="c" data-icon="home" onclick="window.location.href='http://www.google.com'">Back</button></div>
+		<div class="ui-block-a"><button data-theme="c" data-icon="home" onclick="window.location.href='<?php echo $mobile_scheduler_url ?>'">Back</button></div>
 		<div class="ui-block-b"><button type="submit" data-theme="a" name="submit" value="delete">Delete</button></div>
 	</fieldset>
     </div>
