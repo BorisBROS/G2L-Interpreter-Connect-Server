@@ -34,6 +34,7 @@
 	<form action="mobile_scheduler_edit.php" method="get" class="ui-body ui-body-a">
 		<fieldset>
         	<?php 
+        		//I'm worried about caching issues from switching to a get request...
         		 if($interpreter_id_exists){
         			echo("<input type='hidden' name='interpreter_id' value='$interpreter_id' />");
         		}
