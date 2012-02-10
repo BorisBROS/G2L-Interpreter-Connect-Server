@@ -97,10 +97,11 @@ function send_requests($language, $request_id) {
 	AND (`language1` = '$escaped_language_string' OR `language2` = '$escaped_language_string')";
 	*/
 
+	//TODO: Check accept/finish activity as well.
+	//	This way we can avoid sending to interpreters who are currently interpreting,
+	
+	
 	error_log('Available Interpreters Query:' . $query);
-
-	//TODO: Maybe add a clause to see if they recently rejected a request?
-	//(this would be a reason to do something with reject messages)
 
 	$result = mysql_query($query) or die(mysql_error());
 	$available_interpreters = mysql_num_rows($result);
@@ -111,8 +112,7 @@ function send_requests($language, $request_id) {
 	// http://stackoverflow.com/questions/138374/close-a-connection-early
 	// http://www.php.net/manual/en/features.connection-handling.php#71172
 	// http://php.net/manual/en/function.flush.php
-	// Unfortunately this doesn't seem to work, but the ignore_user_abort might be important
-	// it might be better to do this in a separate process using a shell command.
+	// I don't know if this works...
 	ob_end_clean();
 	header("Connection: close");
 	ignore_user_abort();
@@ -124,26 +124,30 @@ function send_requests($language, $request_id) {
 	flush();
 	ob_flush();
 	ob_end_flush(); // Strange behaviour, will not work
-	flush();	// Unless both are called !
+	flush();		// Unless both are called !
 
 	while ($row = mysql_fetch_assoc($result)) {
 
+		//Check if the request was filled and terminate the loop if so
+		$request_filled_query = "SELECT * FROM requests
+		WHERE `filled_by` IS NULL AND `id` = $request_id";
+
+		$request_filled_result = mysql_query($request_filled_query) or die(mysql_error());
+		if(mysql_num_rows($request_filled_result) == 0) { //This request was filled
+			break;
+		}
+		
 		$interpreter_id = $row["id"];
 		$interpreter_phone = $row["g2lphone"];
 
-		
-		//See if a request was sent to interpreter in the last 5 minutes...
-
-		//TODO: Track accept/finish activity as well.
-		//	This way we can avoid sending to interpreters who are currently interpreting,
-
+		//See if a request was sent to interpreter in the last few minutes...
+		//TODO: Should check if a request was accepted/rejected by them rather than sent to them.
 		//Should this be a transaction?
 		$interpreter_busy_query = "SELECT * FROM requests_sent
 		WHERE `interpreter_id` = $interpreter_id
 		AND TIMESTAMPDIFF(SECOND, `time-stamp`, NOW()) < 120";
-
+		
 		$interpreter_busy_result = mysql_query($interpreter_busy_query) or die(mysql_error());
-
 		if(mysql_num_rows($interpreter_busy_result) > 0) { //This interpreter is busy
 			continue;
 		}
@@ -163,7 +167,7 @@ function send_requests($language, $request_id) {
 
 		// Throttling... 
 		if($requests_sent < $available_interpreters){
-			sleep ( 30 );//wait 30 seconds between requests
+			sleep ( 20 );//wait N seconds between requests
 		}
 	}
 	return $requests_sent;
