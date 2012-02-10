@@ -39,7 +39,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
         return hour + ':' + minute + ' ' + ampm;
     }
 
-	$('div').live('pagecreate', function() {
+	$('div').live('pageinit', function() {
         
         cur_date = new Date();
 
