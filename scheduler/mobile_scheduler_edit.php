@@ -42,9 +42,11 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	$('div').live('pagecreate', function() {
         
         cur_date = new Date();
-        
-        $('#start_time').val( cur_date.print12HourTime() );
-        $('#end_time').val( cur_date.addHours(1).print12HourTime() );
+
+        if(!$('#start_time').val() && !$('#end_time').val()){
+        	$('#start_time').val( cur_date.print12HourTime() );
+        	$('#end_time').val( cur_date.addHours(1).print12HourTime() );
+        }
         
 		prettyPrint()
 	});
