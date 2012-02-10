@@ -31,7 +31,7 @@
 		<h1>Interpreter Availability Scheduler</h1>
 	</div>
 	
-	<form action="mobile_scheduler_edit.php" method="post" class="ui-body ui-body-a">
+	<form action="mobile_scheduler_edit.php" method="get" class="ui-body ui-body-a">
 		<fieldset>
         	<?php 
         		 if($interpreter_id_exists){
