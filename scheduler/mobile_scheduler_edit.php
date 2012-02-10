@@ -31,12 +31,14 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 	
 </head>
 <body>
-<form action="<?php echo $mobile_scheduler_url ?>" method="post">
+
 <div data-role="page" data-theme="c" id="droIndex"> 
 	<!--   <div data-role="header"> 
 		<h1>Add Time</h1>
 		<a href="<?php echo $mobile_scheduler_url ?>" data-icon="home" data-iconpos="notext">Home</a>
 	</div>-->
+	
+	<form action="<?php echo $mobile_scheduler_url ?>" method="post">
 	
 	<div class="ui-body ui-body-b">
 	<fieldset class="ui-grid-a">
@@ -97,8 +99,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
 		 <div class="ui-block"><button type="submit" data-theme="d" name="submit" value="save">Save</button></div>
     </fieldset>
 	</div>
-	
+	</form>
 </div>
-</form>
 </body>
 </html>
