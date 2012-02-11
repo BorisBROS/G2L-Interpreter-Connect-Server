@@ -90,7 +90,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
                 if(array_key_exists('start_time', $_REQUEST)){
                 	echo('value="'.htmlentities($_REQUEST['start_time']).'"');
                 }
-                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true, "focusMode": true}' />
+                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true, "focusMode": true, "minuteStep" : 10}' />
 		    </div>
 			
             <div data-role="fieldcontain">
@@ -99,7 +99,7 @@ if(array_key_exists('interpreter_id', $_REQUEST)){
                 if(array_key_exists('end_time', $_REQUEST)){
                 	echo('value="'.htmlentities($_REQUEST['end_time']).'"');
                 }
-                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true, "focusMode": true}' />
+                ?> data-role="datebox" data-options='{"mode": "timebox", "timeFormatOverride": 12, "disableManualInput" : true, "focusMode": true, "minuteStep" : 10}' />
 		    </div>
 
     		<div  data-role="fieldcontain">
