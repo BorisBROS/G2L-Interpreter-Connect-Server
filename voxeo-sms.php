@@ -105,19 +105,16 @@ function send_requests($language, $request_id, $requester_phone_num) {
 	//TODO: Check accept/finish activity as well.
 	//	This way we can avoid sending to interpreters who are currently interpreting,
 	
-	
-	error_log('Available Interpreters Query:' . $query);
+	//error_log('Available Interpreters Query:' . $query);
 
 	$result = mysql_query($query) or die(mysql_error());
 	$available_interpreters = mysql_num_rows($result);
 
 	
-	
-	// We want to close the connection before sending out the requests
-	// since it's pretty time consuming.
-	// The code below is probably excessive and incorrect, but it seems to work.
-	
-	// Some of our refrences:
+	// I was trying to close the connection and send a reply in the http responce,
+	// but now I'm doing it explicitly with send_sms_to_phone
+	// Closing the connection early seems to be pretty messy.
+	// Some refrences:
 	// http://stackoverflow.com/questions/138374/close-a-connection-early
 	// http://www.php.net/manual/en/features.connection-handling.php#71172
 	// http://php.net/manual/en/function.flush.php
