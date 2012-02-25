@@ -53,6 +53,8 @@ function detect_requested_language($message) {
 	} 
 	return NULL;
 }
+
+
 /**
  * 
  * Sent requests with the given id to all available interpreters that speak the given language.
@@ -107,12 +109,14 @@ function send_requests($language, $request_id) {
 	$available_interpreters = mysql_num_rows($result);
 	$requests_sent = 0;
 
-	// Voxeo might not like how long send_requests takes
-	// so we close the connection early
+	// We want to close the connection before sending out the requests
+	// since it's pretty time consuming.
+	// The code below is probably excessive and incorrect, but it seems to work.
+	
+	// Some of our refrences:
 	// http://stackoverflow.com/questions/138374/close-a-connection-early
 	// http://www.php.net/manual/en/features.connection-handling.php#71172
 	// http://php.net/manual/en/function.flush.php
-	// I don't know if this works...
 	ob_end_clean();
 	header("Connection: close");
 	ignore_user_abort();
@@ -126,51 +130,9 @@ function send_requests($language, $request_id) {
 	ob_end_flush(); // Strange behaviour, will not work
 	flush();		// Unless both are called !
 
-	while ($row = mysql_fetch_assoc($result)) {
-
-		//Check if the request was filled and terminate the loop if so
-		$request_filled_query = "SELECT * FROM requests
-		WHERE `filled_by` IS NULL AND `id` = $request_id";
-
-		$request_filled_result = mysql_query($request_filled_query) or die(mysql_error());
-		if(mysql_num_rows($request_filled_result) == 0) { //This request was filled
-			break;
-		}
-		
-		$interpreter_id = $row["id"];
-		$interpreter_phone = $row["g2lphone"];
-
-		//See if a request was sent to interpreter in the last few minutes...
-		//TODO: Should check if a request was accepted/rejected by them rather than sent to them.
-		//Should this be a transaction?
-		$interpreter_busy_query = "SELECT * FROM requests_sent
-		WHERE `interpreter_id` = $interpreter_id
-		AND TIMESTAMPDIFF(SECOND, `time-stamp`, NOW()) < 120";
-		
-		$interpreter_busy_result = mysql_query($interpreter_busy_query) or die(mysql_error());
-		if(mysql_num_rows($interpreter_busy_result) > 0) { //This interpreter is busy
-			continue;
-		}
-
-		error_log("sending request to " . $row["g2lphone"]);
-
-		// %2B is char code for +, which means request interpretation
-		$requestSMS = '%2B ' . $request_id . ' ' . ucfirst($language);
-		send_sms_to_phone($requestSMS, $interpreter_phone);
-
-		//Before doing the rest we might want to check that the the sms_sending was a success.
-
-		$request_sent_query = "INSERT INTO requests_sent (`request_id`, `interpreter_id`) VALUES ($request_id, $interpreter_id)";
-		$result2 = mysql_query($request_sent_query) or die(mysql_error());
-
-		$requests_sent++;
-
-		// Throttling... 
-		if($requests_sent < $available_interpreters){
-			sleep ( 20 );//wait N seconds between requests
-		}
-	}
-	return $requests_sent;
+	// Do the request sending in a background process:
+	exec("php send-requests-thread.php --language $language --requestid ".
+		"$request_id --from $phone &> /dev/null &");
 }
 /**
  *  
@@ -210,7 +172,9 @@ function handle_request($message, $phone) {
 		$row = mysql_fetch_array($result2, 0);
 		$request_id = $row[0];
 
-		echo("Request ID: $request_id\n");
+		if( array_key_exists('debug', $_REQUEST) ) {
+			echo("Request ID: $request_id\n");
+		}
 
 		send_requests($language, $request_id);
 
