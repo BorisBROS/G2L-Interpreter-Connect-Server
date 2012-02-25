@@ -126,7 +126,7 @@ function send_requests($language, $request_id, $requester_phone_num) {
 	if( array_key_exists('debug', $_REQUEST) ) {
 		echo("Attempting to send  requests to $available_interpreters available interpreters");
 	}
-	send_sms_to_phone("Tratando de enviar la petición a $available_interpreters interprete(s) disponibles.", $interpreter_phone);
+	send_sms_to_phone("Tratando de enviar la petición a $available_interpreters interprete(s) disponibles.", $requester_phone_num);
 	
 	$size = ob_get_length();
 	header("Content-Length: $size");
