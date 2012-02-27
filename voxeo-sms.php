@@ -248,10 +248,12 @@ function handle_request($message, $phone) {
 /**
  * This function is used for logging the responses to requests sent.
  */
-function update_request_sent($accepted, $request_id, $receive_time, $response_time){
+function update_request_sent($accepted, $interpreter_phone, $request_id, $receive_time, $response_time){
 		$update_request_sent_query = "UPDATE requests_sent
-		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time), `response_time`=FROM_UNIXTIME($response_time), `accepted`=$accepted
-		 WHERE `request_id` = $request_id";
+		 JOIN interpreters ON interpreters.id = `interpreter_id`
+		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time  / 1000), `response_time`=FROM_UNIXTIME($response_time  / 1000), `accepted`=$accepted
+		 WHERE `request_id` = $request_id
+		 AND interpreters.g2lphone = '$interpreter_phone'";
 		$update_request_sent_result = mysql_query($update_request_sent_query) or die(mysql_error());
 }
 /**
@@ -276,7 +278,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 	//check if the message is accepting/rejecting a request by looking at the first word
 	if ($firstWord == "accept") {
 		// Log the message:
-		update_request_sent(true, $request_id, $explodedMsg[2], $explodedMsg[3]);
+		update_request_sent(true, $interpreter_phone, $request_id, $explodedMsg[2], $explodedMsg[3]);
 		
 		// Maximum delay in minutes between the system recieving an interpretation request
 		// and an accept message from an interpreter.
@@ -336,7 +338,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 
 	} elseif ($firstWord == "reject") {
 		// Log the message:
-		update_request_sent(false, $request_id, $explodedMsg[2], $explodedMsg[3]);
+		update_request_sent(false, $interpreter_phone, $request_id, $explodedMsg[2], $explodedMsg[3]);
 		// This info could also be used to cut down on the number of dismiss message sent out when an interpreter
 		// accepts a request.
 		error_log("rejected");
@@ -351,7 +353,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 
 		$call_finished_update_query = "UPDATE requests
 		 JOIN interpreters ON interpreters.id = requests.filled_by
-		 SET `finish_recieved`=NOW(), `call_duration`=$call_duration, `call_start`=FROM_UNIXTIME($call_start), `call_end`=FROM_UNIXTIME($call_end)
+		 SET `finish_recieved`=NOW(), `call_duration`=$call_duration, `call_start`=FROM_UNIXTIME($call_start / 1000), `call_end`=FROM_UNIXTIME($call_end  / 1000)
 		 WHERE interpreters.g2lphone = '$interpreter_phone'
 		 AND requests.id = $request_id";
 
