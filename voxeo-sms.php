@@ -143,6 +143,7 @@ function send_requests($language, $request_id, $requester_phone_num) {
 
 		$request_filled_result = mysql_query($request_filled_query) or die(mysql_error());
 		if(mysql_num_rows($request_filled_result) == 0) { //This request was filled
+			error_log("Breaking because request was filled");
 			break;
 		}
 		
@@ -159,6 +160,9 @@ function send_requests($language, $request_id, $requester_phone_num) {
 		WHERE `filled_by` = $interpreter_id
 		AND TIMESTAMPDIFF(SECOND, `call_command_sent`, NOW()) < $max_call_length
 		AND `finish_recieved` IS NULL";
+		
+		error_log($better_interpreter_busy_query);
+		
 		$better_interpreter_busy_result = mysql_query($better_interpreter_busy_query) or die(mysql_error());
 		if(mysql_num_rows($better_interpreter_busy_result) > 0){ //This interpreter is busy
 			error_log("BUSY");
