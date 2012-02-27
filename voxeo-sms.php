@@ -256,14 +256,19 @@ function handle_request($message, $phone) {
  * This function is used for logging the responses to requests sent.
  */
 function update_request_sent($accepted, $interpreter_phone, $request_id, $receive_time, $response_time){
+	
+		$mysql_accepted = 0;
+		if($accepted){
+			$mysql_accepted = 1;
+		}
 		
 		$update_request_sent_query = "UPDATE requests_sent
 		 JOIN interpreters ON interpreters.id = `interpreter_id`
-		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time  / 1000), `response_time`=FROM_UNIXTIME($response_time  / 1000), `accepted`=$accepted
+		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time  / 1000), `response_time`=FROM_UNIXTIME($response_time  / 1000), `accepted`=$mysql_accepted
 		 WHERE `request_id` = $request_id
 		 AND interpreters.g2lphone = '$interpreter_phone'";
 
-		error_log("update_request_sent: " . $update_request_sent_query);		 
+		//error_log("update_request_sent: " . $update_request_sent_query);		 
 
 		$update_request_sent_result = mysql_query($update_request_sent_query); //or die(mysql_error());
 		//I removed die because we don't want to fail if only the logging breaks.
