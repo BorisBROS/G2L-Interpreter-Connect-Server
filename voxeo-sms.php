@@ -21,9 +21,6 @@ function get_db_connection() {
 
 //TODO: Immediate availability feature (while the phone is in available mode, one interpreter will be chosen to recieve the next request directly).
 
-//TODO: Schedule change requests
-
-
 /**
  * This function attempts to detect the requested language in an sms message.
  * It either returns the language name or NULL if the language could not be detected
@@ -126,7 +123,9 @@ function send_requests($language, $request_id, $requester_phone_num) {
 	if( array_key_exists('debug', $_REQUEST) ) {
 		echo("Attempting to send  requests to $available_interpreters available interpreters");
 	}
-	send_sms_to_phone("Tratando de enviar la petición a $available_interpreters interprete(s) disponibles.", $requester_phone_num);
+	//Removing accent because it doesn't work on my phone.
+	//send_sms_to_phone("Tratando de enviar la petición a $available_interpreters interprete(s) disponibles.", $requester_phone_num);
+	send_sms_to_phone("Tratando de enviar la peticion a $available_interpreters interprete(s) disponibles.", $requester_phone_num);
 	
 	$size = ob_get_length();
 	header("Content-Length: $size");
@@ -137,8 +136,8 @@ function send_requests($language, $request_id, $requester_phone_num) {
 	
 	$requests_sent = 0;
 	while ($row = mysql_fetch_assoc($result)) {
-
 		//Check if the request was filled and terminate the loop if so
+		//Should this loop's body be a transaction?
 		$request_filled_query = "SELECT * FROM requests
 		WHERE `filled_by` IS NULL AND `id` = $request_id";
 
@@ -147,12 +146,27 @@ function send_requests($language, $request_id, $requester_phone_num) {
 			break;
 		}
 		
+		//Request isn't filled so try th next interpreter:
 		$interpreter_id = $row["id"];
 		$interpreter_phone = $row["g2lphone"];
 
-		//See if a request was sent to interpreter in the last few minutes...
-		//TODO: Should check if a request was accepted/rejected by them rather than sent to them.
-		//Should this be a transaction?
+		//See if the interpterer appears to be busy handling another request:
+		
+		//TODO: Should check if a request was accepted by them rather than sent to them.
+		$max_call_length = 60 * 60; //seconds
+		$better_interpreter_busy_query = "SELECT * FROM requests
+		WHERE `filled_by` = $interpreter_id
+		AND TIMESTAMPDIFF(SECOND, `call_command_sent`, NOW()) < $max_call_length
+		AND `finish_recieved` IS NULL";
+		$better_interpreter_busy_result = mysql_query($better_interpreter_busy_query) or die(mysql_error());
+		if(mysql_num_rows($better_interpreter_busy_result) > 0){ //This interpreter is busy
+			error_log("BUSY");
+		}
+		else{
+			error_log("NOT BUSY");
+		}
+
+		//Old way of checking if they are busy is to see if they got any requests in the last 2 minutes.
 		$interpreter_busy_query = "SELECT * FROM requests_sent
 		WHERE `interpreter_id` = $interpreter_id
 		AND TIMESTAMPDIFF(SECOND, `time-stamp`, NOW()) < 120";
@@ -232,6 +246,15 @@ function handle_request($message, $phone) {
 	}
 }
 /**
+ * This function is used for logging the responses to requests sent.
+ */
+function update_request_sent($accepted, $request_id, $receive_time, $response_time){
+		$update_request_sent_query = "UPDATE requests_sent
+		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time), `response_time`=FROM_UNIXTIME($response_time), `accepted`=$accepted
+		 WHERE `request_id` = $request_id";
+		$update_request_sent_result = mysql_query($update_request_sent_query) or die(mysql_error());
+}
+/**
  *  
  * This function tries to handle a message with the assumption it was received from an interpreter.
  * @param string $message
@@ -252,7 +275,9 @@ function handle_interpreter_message($message, $interpreter_phone) {
 
 	//check if the message is accepting/rejecting a request by looking at the first word
 	if ($firstWord == "accept") {
-
+		// Log the message:
+		update_request_sent(true, $request_id, $explodedMsg[2], $explodedMsg[3]);
+		
 		// Maximum delay in minutes between the system recieving an interpretation request
 		// and an accept message from an interpreter.
 		$maxDelay = 5;
@@ -310,25 +335,32 @@ function handle_interpreter_message($message, $interpreter_phone) {
 		}
 
 	} elseif ($firstWord == "reject") {
+		// Log the message:
+		update_request_sent(false, $request_id, $explodedMsg[2], $explodedMsg[3]);
+		// This info could also be used to cut down on the number of dismiss message sent out when an interpreter
+		// accepts a request.
 		error_log("rejected");
-		// do nothing
-		// could add logging later on but I don't know what it would be used for
-		// it is already possible to infer whether an interpreter didn't accept a request
-		// do we care about the excluded middle?
-		// This can also cut down on the number of dismiss message sent out when an interpreter
-		// accepts a request if we decide to do that.
+		
 	} elseif ($firstWord == "finished") {
 		$call_duration = $explodedMsg[2];// in milliseconds
+		
+		//I accidentally reversed the start and end stamps on the apps, 
+		//reading them this way will allow me to fix it eventually without worrying about backwards compatibility.
+		$call_start = min($explodedMsg[3], $explodedMsg[4]);
+		$call_end = max($explodedMsg[3], $explodedMsg[4]);
 
 		$call_finished_update_query = "UPDATE requests
 		 JOIN interpreters ON interpreters.id = requests.filled_by
-		 SET `finish_recieved`=NOW(), `call_duration`=$call_duration
+		 SET `finish_recieved`=NOW(), `call_duration`=$call_duration, `call_start`=FROM_UNIXTIME($call_start), `call_end`=FROM_UNIXTIME($call_end)
 		 WHERE interpreters.g2lphone = '$interpreter_phone'
 		 AND requests.id = $request_id";
 
 		$call_finished_update_result = mysql_query($call_finished_update_query) or die(mysql_error());
 		
+		//TODO: Send please take survey message (get translations from Adam?)
+		
 		error_log("Finished");
+		
 	}
 	else {
 		return false;

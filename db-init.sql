@@ -42,6 +42,8 @@ CREATE TABLE `requests` (
 	`call_command_sent` DATETIME default NULL,
 	`finish_recieved` DATETIME default NULL, 
 	`call_duration` int UNSIGNED, -- In milliseconds
+	`call_start` DATETIME default NULL, -- The time on the interpreter's phone when the call is made.
+	`call_end` DATETIME default NULL, -- The time on the interpreter's phone when the last call ends (keep in mind redials).
 	FOREIGN KEY (`filled_by`) REFERENCES interpreters(`id`)); -- Should I do something like CASCADE for ON UPDATE or ON DELETE?
 
 DROP TABLE IF EXISTS `requests_sent`;
@@ -49,6 +51,10 @@ CREATE TABLE `requests_sent` (
 	`request_id` int UNSIGNED NOT NULL,
 	`interpreter_id` int UNSIGNED NOT NULL,
 	`time-stamp` TIMESTAMP default NOW(),
+	`receive_time` DATETIME default NULL,
+	`response_time` DATETIME default NULL,
+	`server_receive_time` DATETIME default NULL,
+	`accepted` bool default NULL,
 	INDEX(`request_id`),
 	FOREIGN KEY (`interpreter_id`) REFERENCES interpreters(`id`),
 	FOREIGN KEY (`request_id`) REFERENCES requests(`id`) ON UPDATE CASCADE ON DELETE CASCADE);
