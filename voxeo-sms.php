@@ -256,15 +256,17 @@ function handle_request($message, $phone) {
  * This function is used for logging the responses to requests sent.
  */
 function update_request_sent($accepted, $interpreter_phone, $request_id, $receive_time, $response_time){
-	
-		error_log("update_request_sent: " . $update_request_sent_query);
 		
 		$update_request_sent_query = "UPDATE requests_sent
 		 JOIN interpreters ON interpreters.id = `interpreter_id`
 		 SET `server_receive_time`=NOW(), `receive_time`=FROM_UNIXTIME($receive_time  / 1000), `response_time`=FROM_UNIXTIME($response_time  / 1000), `accepted`=$accepted
 		 WHERE `request_id` = $request_id
 		 AND interpreters.g2lphone = '$interpreter_phone'";
+
+		error_log("update_request_sent: " . $update_request_sent_query);		 
+
 		$update_request_sent_result = mysql_query($update_request_sent_query); //or die(mysql_error());
+		//I removed die because we don't want to fail if only the logging breaks.
 }
 /**
  *  
@@ -351,6 +353,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 		update_request_sent(false, $interpreter_phone, $request_id, $explodedMsg[2], $explodedMsg[3]);
 		// This info could also be used to cut down on the number of dismiss message sent out when an interpreter
 		// accepts a request.
+		// TODO: Check if all interpreters rejected.
 		error_log("rejected");
 		
 	} elseif ($firstWord == "finished") {
