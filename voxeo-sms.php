@@ -106,7 +106,6 @@ function send_requests($language, $request_id, $requester_phone_num) {
 
 	$result = mysql_query($query) or die(mysql_error());
 	$available_interpreters = mysql_num_rows($result);
-
 	
 	// I was trying to close the connection and send a reply in the http responce,
 	// but now I'm doing it explicitly with send_sms_to_phone
@@ -292,8 +291,20 @@ function handle_interpreter_message($message, $interpreter_phone) {
 	$firstWord = $explodedMsg[0];
 	$request_id = $explodedMsg[1]; // The request_id linking the request to our database
 
+	// Get interpreter id:
+	//TODO: Use this to simplify the queries.
+	$interpreter_id_query = "SELECT `id` FROM interpreters WHERE `g2lphone`='$interpreter_phone'";
+	$interpreter_id_result = mysql_query($interpreter_id_query) or die(mysql_error());
+	$interpreter_id_row = mysql_fetch_array($select_request_result, 0);
+	if(!$interpreter_id_row){
+		die();
+	}
+	$interpreter_id = $interpreter_id_row[0];
+	error_log("interpreter id: $interpreter_id");
+
 	//check if the message is accepting/rejecting a request by looking at the first word
 	if ($firstWord == "accept") {
+		
 		// Log the message:
 		update_request_sent(true, $interpreter_phone, $request_id, $explodedMsg[2], $explodedMsg[3]);
 		
@@ -377,8 +388,17 @@ function handle_interpreter_message($message, $interpreter_phone) {
 
 		$call_finished_update_result = mysql_query($call_finished_update_query) or die(mysql_error());
 		
-		//TODO: Send please take survey message (get translations from Adam?)
-		
+		//Send survey request:
+		$interpretee_number_query = "SELECT `requester_phone` FROM requests WHERE `id` = $request_id";
+		$interpretee_number_result = mysql_query($interpretee_number_query) or die(mysql_error());
+		$interpretee_number_row = mysql_fetch_array($select_request_result, 0);
+		if($interpretee_number_row){
+			error_log('Sending please take survey message to ' . $interpretee_number_row[0]);
+			//"Thanks for calling, please call this number and take our survey."
+			$survey_request_message = "Gracias por llamar, por favor llame a este numero y realice nuestra encuesta.";
+			send_sms_to_phone($survey_request_message, $interpretee_number_row[0]);
+		}
+	
 		error_log("Finished");
 		
 	}
