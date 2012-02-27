@@ -153,6 +153,7 @@ function send_requests($language, $request_id, $requester_phone_num) {
 		//See if the interpterer appears to be busy handling another request:
 		
 		//TODO: Should check if a request was accepted by them rather than sent to them.
+		//TODO: Check for recent rejects
 		$max_call_length = 60 * 60; //seconds
 		$better_interpreter_busy_query = "SELECT * FROM requests
 		WHERE `filled_by` = $interpreter_id
@@ -161,11 +162,13 @@ function send_requests($language, $request_id, $requester_phone_num) {
 		$better_interpreter_busy_result = mysql_query($better_interpreter_busy_query) or die(mysql_error());
 		if(mysql_num_rows($better_interpreter_busy_result) > 0){ //This interpreter is busy
 			error_log("BUSY");
+			//continue; //Not sure if I should do this. Check with Adam.
 		}
 		else{
 			error_log("NOT BUSY");
 		}
 
+/*
 		//Old way of checking if they are busy is to see if they got any requests in the last 2 minutes.
 		$interpreter_busy_query = "SELECT * FROM requests_sent
 		WHERE `interpreter_id` = $interpreter_id
@@ -175,7 +178,7 @@ function send_requests($language, $request_id, $requester_phone_num) {
 		if(mysql_num_rows($interpreter_busy_result) > 0) { //This interpreter is busy
 			continue;
 		}
-
+*/
 		error_log("sending request to " . $row["g2lphone"]);
 
 		// %2B is char code for +, which means request interpretation
@@ -329,7 +332,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 			$requester_phone = $row[0];
 			$makeCallMessage = "%2A $request_id $requester_phone"; // %2A is char code for *
 
-			error_log("sending call command to $requester_phone");
+			error_log("sending command to call $requester_phone to $interpreter_phone");
 
 			send_sms_to_phone($makeCallMessage, $interpreter_phone);
 
