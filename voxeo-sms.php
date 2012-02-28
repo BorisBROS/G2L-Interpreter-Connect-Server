@@ -295,7 +295,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 	//TODO: Use this to simplify the queries.
 	$interpreter_id_query = "SELECT `id` FROM interpreters WHERE `g2lphone`='$interpreter_phone'";
 	$interpreter_id_result = mysql_query($interpreter_id_query) or die(mysql_error());
-	$interpreter_id_row = mysql_fetch_array($select_request_result, 0);
+	$interpreter_id_row = mysql_fetch_array($interpreter_id_result, 0);
 	if(!$interpreter_id_row){
 		die();
 	}
