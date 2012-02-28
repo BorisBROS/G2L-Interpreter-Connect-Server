@@ -391,7 +391,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 		//Send survey request:
 		$interpretee_number_query = "SELECT `requester_phone` FROM requests WHERE `id` = $request_id";
 		$interpretee_number_result = mysql_query($interpretee_number_query) or die(mysql_error());
-		$interpretee_number_row = mysql_fetch_array($select_request_result, 0);
+		$interpretee_number_row = mysql_fetch_array($interpretee_number_result, 0);
 		if($interpretee_number_row){
 			error_log('Sending please take survey message to ' . $interpretee_number_row[0]);
 			//"Thanks for calling, please call this number and take our survey."
