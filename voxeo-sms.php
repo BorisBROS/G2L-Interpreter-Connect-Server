@@ -297,7 +297,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 	$interpreter_id_result = mysql_query($interpreter_id_query) or die(mysql_error());
 	$interpreter_id_row = mysql_fetch_array($interpreter_id_result, 0);
 	if(!$interpreter_id_row){
-		die();
+		return false;
 	}
 	$interpreter_id = $interpreter_id_row[0];
 	error_log("interpreter id: $interpreter_id");
