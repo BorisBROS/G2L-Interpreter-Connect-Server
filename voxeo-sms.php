@@ -291,6 +291,7 @@ function handle_interpreter_message($message, $interpreter_phone) {
 	$firstWord = $explodedMsg[0];
 	$request_id = $explodedMsg[1]; // The request_id linking the request to our database
 
+
 	// Get interpreter id:
 	//TODO: Use this to simplify the queries.
 	$interpreter_id_query = "SELECT `id` FROM interpreters WHERE `g2lphone`='$interpreter_phone'";
